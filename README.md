@@ -41,7 +41,7 @@ If you discover any security related issues, please email bigcodole@gmail.com in
 
 ## Credits
 
-- [GENL](https://github.com/matice)
+- [GENL](https://github.com/GENL/matice)
 - [All Contributors](../../contributors)
 
 ## License

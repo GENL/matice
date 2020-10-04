@@ -52,8 +52,8 @@ class MaticeServiceProvider extends ServiceProvider
             return MaticeServiceProvider::makeFolderFilesTree(config('config.lang_directory'));
         });
 
-        Blade::directive('translations', function ($expression) {
-            return "<?php echo app()->make('matice')->generate(); ?>";
+        Blade::directive('translations', function ($locale) {
+            return "<?php echo app()->make('matice')->generate($locale); ?>";
         });
     }
 

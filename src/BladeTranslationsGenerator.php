@@ -13,9 +13,11 @@ class BladeTranslationsGenerator
     /**
      * Load the translations array and the generate a the html code to paste to the page.
      *
+     * @param string|null $locale
+     *      the locale language to load. All translation are loaded if locale is null. Default to null
      * @return string
      */
-    public function generate() : string
+    public function generate(?string $locale = null) : string
     {
         $translations = json_encode($this->translations());
 
@@ -31,11 +33,17 @@ EOT;
     /**
      * Load all the translations array.
      *
-     * @param string|null $path
+     * @param string|null $locale
      * @return array
      */
-    public function translations(): array
+    public function translations(?string $locale = null): array
     {
-        return Translator::list();
+        $translations = Translator::list();
+
+        if (isset($translations[$locale])) {
+            $translations = $translations[$locale];
+        }
+
+        return $translations;
     }
 }

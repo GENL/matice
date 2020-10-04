@@ -2,10 +2,10 @@
 
 namespace Matice\Matice\Tests;
 
+use Illuminate\Support\Facades\Blade;
 use Matice\Matice\Facades\Matice;
 use Orchestra\Testbench\TestCase;
 use Matice\Matice\MaticeServiceProvider;
-use phpDocumentor\Reflection\Types\This;
 
 class ManageTranslationTest extends TestCase
 {
@@ -25,7 +25,7 @@ class ManageTranslationTest extends TestCase
     /**
      * @test
      */
-    public function makeFolderFilesTree()
+    public function loadTranslations()
     {
         // $translations = app()->make('matice')->translations('./assets/lang');
         $translations = Matice::translations('./assets/lang');
@@ -44,8 +44,14 @@ class ManageTranslationTest extends TestCase
      */
     public function generateTranslationJs()
     {
-        $js = Matice::generate();
+        $jsOutput = Matice::generate();
 
-        $this->assertStringContainsString('<script type="text/javascript">', $js);
+        $bladeOutPut1 = Blade::compileString('@translations');
+        $bladeOutPut2 = Blade::compileString('@translations(\'en\')');
+
+        $this->assertTrue("<?php echo app()->make('matice')->generate(); ?>" === $bladeOutPut1);
+        $this->assertTrue("<?php echo app()->make('matice')->generate('en'); ?>" === $bladeOutPut2);
+
+        $this->assertStringContainsString('<script type="text/javascript">', $jsOutput);
     }
 }
