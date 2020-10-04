@@ -1,0 +1,32 @@
+{
+  "name": "matice",
+  "version": "1.0.0",
+  "description": "Matice - Use your Laravel translations in JavaScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GENL/matice.git"
+  },
+  "keywords": [],
+  "author": "Ekcel Henrich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GENL/matice/issues"
+  },
+  "homepage": "https://github.com/GENL/matice#readme",
+  "devDependencies": {
+    "@types/node": "^14.11.2"
+  }
+}
