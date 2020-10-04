@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
+use phpDocumentor\Reflection\Types\Self_;
 
 class MaticeServiceProvider extends ServiceProvider
 {
@@ -24,9 +25,9 @@ class MaticeServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
-            // $this->publishes([
-            // __DIR__.'/../config/config.php' => config_path('matice.php'),
-            // ], 'config');
+             $this->publishes([
+             __DIR__.'/../config/config.php' => config_path('matice.php'),
+             ], 'config');
 
             // Publishing the views.
             /*$this->publishes([
@@ -48,7 +49,7 @@ class MaticeServiceProvider extends ServiceProvider
         }
 
         Translator::macro('list', function () {
-            return $this->makeFolderFilesTree(__DIR__ . '/../resources/lang');
+            return MaticeServiceProvider::makeFolderFilesTree(config('config.lang_directory'));
         });
 
         Blade::directive('translations', function ($expression) {
@@ -71,7 +72,6 @@ class MaticeServiceProvider extends ServiceProvider
     }
 
 
-
     /**
      * Load all folders and files (php and json) inside of a directory and
      * return an array representation of them.
@@ -79,7 +79,7 @@ class MaticeServiceProvider extends ServiceProvider
      * @param $dir
      * @return array
      */
-    protected function makeFolderFilesTree($dir): array
+    public static function makeFolderFilesTree($dir): array
     {
         $tree = [];
         $ffs = scandir($dir);
@@ -95,7 +95,7 @@ class MaticeServiceProvider extends ServiceProvider
 
                 if (is_dir($dir . '/' . $ff)) {
 
-                    $tree[$ff] = $this->makeFolderFilesTree($dir . '/' . $ff);
+                    $tree[$ff] = MaticeServiceProvider::makeFolderFilesTree($dir . '/' . $ff);
 
                 } else {
 

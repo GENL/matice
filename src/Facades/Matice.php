@@ -1,6 +1,6 @@
 <?php
 
-namespace Matice\Matice;
+namespace Matice\Matice\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

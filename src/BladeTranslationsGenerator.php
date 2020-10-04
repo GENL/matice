@@ -21,8 +21,8 @@ class BladeTranslationsGenerator
 
         return <<<EOT
 <script type="text/javascript">
-    var Matice = {
-        compact('translations'),
+    const Matice = {
+        'translations': $translations,
     }
 </script>
 EOT;
@@ -31,14 +31,11 @@ EOT;
     /**
      * Load all the translations array.
      *
+     * @param string|null $path
      * @return array
      */
     public function translations(): array
     {
-        // return $this->makeFolderFilesTree(__DIR__ . '/../resources/lang');
-
         return Translator::list();
     }
-
-
 }

@@ -5,4 +5,6 @@
  */
 return [
 
+    'lang_directory' => 'resources/lang'
+
 ];
