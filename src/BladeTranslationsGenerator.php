@@ -20,12 +20,18 @@ class BladeTranslationsGenerator
     public function generate(?string $locale = null) : string
     {
         $translations = json_encode($this->translations());
+        $locale = app()->getLocale();
+        $fallbackLocale = config('config.app.fallback_locale');
 
+        /** @noinspection BadExpressionStatementJS */
         return <<<EOT
 <script type="text/javascript">
-    const Matice = {
-        'translations': $translations,
-    }
+// noinspection JSAnnotator
+const Matice = {
+    translations: $translations,
+    locale: $locale,
+    fallbackLocale: $fallbackLocale
+}
 </script>
 EOT;
     }

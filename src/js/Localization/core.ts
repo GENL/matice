@@ -8,6 +8,14 @@ export interface TranslationOptions {
 }
 
 class Localization {
+  public constructor() {
+    // @ts-ignore
+    MaticeLocalizationConfig.locale = Matice.locale
+
+    // @ts-ignore
+    MaticeLocalizationConfig.fallbackLocale = Matice.fallbackLocale
+  }
+
   /**
    * Get the translations of [locale].
    * @param locale
@@ -62,19 +70,64 @@ class Localization {
   private pluralize(sentence: string, count: number): string {
     let parts = sentence.split('|');
 
-    if (sentence)
-
     // Make sure the pieces are always three in length for ease of calculation.
     // We fill the empty indexes with a direct preceding index.
     // We fill the empty parts by the last part.
-      if (parts.length < 3) {
-        if (parts.length === 2) parts = [parts[0], parts[1], parts[1]]
-        else parts = [parts[0], parts[0], parts[0]]
+    if (parts.length >= 3) parts = [parts[0], parts[1], parts[2]]
+    else if (parts.length === 2) parts = [parts[0], parts[1], parts[1]]
+    else parts = [parts[0], parts[0], parts[0]]
+
+    // Manage multiple number range.
+    let ranges: { min: number, max: number, part: string }[] = [];
+
+    const keys = Object.keys(parts)
+    for (const key in keys) {
+      const part = parts[key]
+      let matched = part.match(/^(\[(\s*\d+\s*)+,(\s*(\d+|\*)\s*)])|({\s*\d+\s*})/)
+
+      if (matched === null) {
+        // If range is found, use the part key key as the range.
+        parts[key] = `{${key}} ${parts[key]}`
+        matched = [parts[key]]
       }
 
-    if (count > 1) sentence = parts[2]
-    else if (count === 1) sentence = parts[1]
-    else sentence = parts[0]
+      // Remove unwanted characters: '[', ']', '{', '}'
+      const replaced = matched[0].replace(/[\[{\]}]/, '')
+      // Split the matched to have an array of string number
+      const rangeNumbers = replaced.split(',').map((m: string) => {
+        const parsed = Number.parseInt(m.trim())
+        // If parsed is a start(*) which mean infinity, just replace by count + 1
+        return Number.isInteger(parsed) ? parsed : count + 1
+      })
+
+      ranges.push(
+        rangeNumbers.length == 1
+          ? {min: rangeNumbers[0], max: rangeNumbers[0], part}
+          : {min: rangeNumbers[0], max: rangeNumbers[1], part}
+      )
+    }
+
+    // Compare the part with the range to choose the pluralization.
+    if (count === 0) {
+      sentence = parts[0]
+    } else {
+      for (const range in ranges) {
+        // It means there's
+        // @ts-ignore
+        if (count >= range.min || count <= range.max) {
+          // count is in the range.
+          // @ts-ignore
+          sentence = range.part
+        } else {
+          // If count is not in the range, we use the last part.
+          sentence = parts[parts.length - 1]
+        }
+      }
+    }
+
+    // if (count > 1) sentence = parts[2]
+    // else if (count === 1) sentence = parts[1]
+    // else sentence = parts[0]
 
     return sentence;
   }
@@ -88,7 +141,7 @@ class Localization {
    * @private
    */
   private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale): string {
-    let translations: { [key: string]: any } = this.translations(locale);
+    const translations: { [key: string]: any } = this.translations(locale);
 
     // At first [link] is a [Map<String, dynamic>] but at the end, it can be a [String],
     // the sentences.
