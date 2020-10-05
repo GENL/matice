@@ -107,6 +107,7 @@ class Localization {
       )
     }
 
+    let foundInRange = false;
     // Compare the part with the range to choose the pluralization.
     if (count === 0) {
       sentence = parts[0]
@@ -118,10 +119,13 @@ class Localization {
           // count is in the range.
           // @ts-ignore
           sentence = range.part
-        } else {
-          // If count is not in the range, we use the last part.
-          sentence = parts[parts.length - 1]
+          foundInRange = true
+          break;
         }
+      }
+      if (! foundInRange) {
+        // If count is not in the range, we use the last part.
+        sentence = parts[parts.length - 1]
       }
     }
 
