@@ -1,0 +1,6 @@
+ {
+  "verbose": true,
+  "rootDir": "tests/js",
+  "preset": "ts-jest",
+  "testEnvironment": "node"
+}

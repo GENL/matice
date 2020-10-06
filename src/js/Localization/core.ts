@@ -8,7 +8,16 @@ export interface TranslationOptions {
 }
 
 class Localization {
-  public constructor() {
+  private static instance: Localization;
+
+  public static getInstance(): Localization {
+    if (Localization.instance === undefined) {
+      Localization.instance = new Localization()
+    }
+    return Localization.instance;
+  }
+
+  private constructor() {
     // @ts-ignore
     MaticeLocalizationConfig.locale = Matice.locale
 
@@ -174,18 +183,13 @@ class Localization {
 }
 
 
-
-
-const localization = new Localization();
-
-
 /**
  * Translate the given message.
  * @param key
  * @param options
  */
 export function trans(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
-  return localization.trans(key, false, options);
+  return Localization.getInstance().trans(key, false, options);
 }
 
 /**
@@ -196,5 +200,5 @@ export function trans(key: string, options: TranslationOptions = {args: {}, plur
  * @private
  */
 export function __(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
-  return localization.trans(key, true, options);
+  return Localization.getInstance().trans(key, true, options);
 }

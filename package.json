@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "directories": {
-    "test": "tests"
+    "test": "jest"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "tsc",
     "prepare": "npm run build"
   },
@@ -27,6 +27,11 @@
   },
   "homepage": "https://github.com/GENL/matice#readme",
   "devDependencies": {
-    "@types/node": "^14.11.2"
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.2",
+    "jest": "^26.5.2",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   }
 }
