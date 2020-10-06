@@ -80,15 +80,14 @@ class Localization {
     // Manage multiple number range.
     let ranges: { min: number, max: number, part: string }[] = [];
 
-    const keys = Object.keys(parts)
-    for (const key in keys) {
-      const part = parts[key]
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i]
       let matched = part.match(/^(\[(\s*\d+\s*)+,(\s*(\d+|\*)\s*)])|({\s*\d+\s*})/)
 
       if (matched === null) {
-        // If range is found, use the part key key as the range.
-        parts[key] = `{${key}} ${parts[key]}`
-        matched = [parts[key]]
+        // If range is found, use the part index as the range.
+        parts[i] = `{${i}} ${parts[i]}`
+        matched = [parts[i]]
       }
 
       // Remove unwanted characters: '[', ']', '{', '}'
