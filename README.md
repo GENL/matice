@@ -132,15 +132,11 @@ sentence = trans('greet.me') // Bonjour!
 
 #### Pluralization 
 
-Also 
-
-* Pluralization
-
 Pluralization depends on the `count` argument. 
 
 ```javascript
 // Pluralization
-sentence = trans('greet.people', {args: {name: 'Ekcel', pluralize: true}}) // Hello Ekcel!
+sentence = trans('greet.people', {args: {name: 'Ekcel'}, pluralize: true}) // Hello Ekcel!
 ```
 
 #### Trans Choice
