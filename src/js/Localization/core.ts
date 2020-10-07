@@ -229,10 +229,10 @@ export function __(key: string, options: TranslationOptions = {args: {}, plurali
  * An helper to the trans function but with the pluralization mode activated by default.
  * @param key
  * @param count
- * @param options
+ * @param args
  */
-export function transChoice(key: string, count: number, options: {args: {}}) {
-  return trans(key, {args: {...options.args, count}, pluralize: true});
+export function transChoice(key: string, count: number, args: {}) {
+  return trans(key, {args: {...args, count}, pluralize: true});
 }
 
 export function setLocale(locale: string) {

@@ -68,6 +68,6 @@ test('Pluralize the sentence well', () => {
   sentence = trans('balance', {args: {count: 1000000}, pluralize: true})
   expect(sentence).toEqual(" You are awesome :name; 1000000 Million Dollars")
 
-  sentence = transChoice('balance', 8578442, {args: {name: 'Ekcel'}})
+  sentence = transChoice('balance', 8578442, {name: 'Ekcel'})
   expect(sentence).toEqual(" You are awesome Ekcel; 8578442 Million Dollars")
 });

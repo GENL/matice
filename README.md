@@ -15,8 +15,14 @@ functions which you can use to access your translations in your JavaScript.
 - [Installation](#installation)
 - [Usage](#usage)
     - [Examples](#examples)
+    - [trans](#trans)
+    - [Pluralization](#pluralization)
+    - [Trans Choice](#trans-choice)
+    - [underscore function](#underscore-function)
     - [Default Values](#default-values)
+- [Artisan Command](#artisan-command)
 - [Using with Vue Components](#using-with-vue-components)
+- [Dive Deeper](#dive-deeper)
 
 ## Installation
 
@@ -63,11 +69,14 @@ Matice is fully written in TypeScript. So it is fully compatible with TypeScript
 * ##### Core concepts
 
 Matice comes with almost the same localization concepts as Laravel does. 
-Read more about [Laravel localization](https://laravel.com/docs/8.x/localization)
+Read more about [Laravel localization](https://laravel.com/docs/localization)
 
 This package uses the `@translations` directive to inject a JavaScript object containing all of your application's translations, keyed by their names. This collection is available at `Matice.translations`.
 
 The package also creates an optional `trans()` JavaScript helper that functions like Laravel's PHP `trans()` helper, which can be used to retrieve translation sentences.
+
+
+#### Examples
 
 import the `trans()` function like follow:
  ```javascript
@@ -99,6 +108,8 @@ global.Matice = {
 }
 ```
 
+#### trans
+
 Retrieve a text:
 ```javascript
 let sentence = ''
@@ -114,6 +125,9 @@ sentence = trans('balance', {args: {count: 0}, pluralize: true}) // You're broke
 sentence = trans('balance', {args: {count: 3000}, pluralize: true}) // a middle man
 ```
 
+
+#### Pluralization 
+
 Also 
 
 * Pluralization
@@ -125,19 +139,25 @@ Pluralization depends on the `count` argument.
 sentence = trans('greet.people', {args: {name: 'Ekcel', pluralize: true}}) // Hello Ekcel!
 ```
 
+#### Trans Choice
+
 Matice provides a helper function for pluralization
 
 ```javascript
 import { transChoice } from "matice"
 
-let sentence = transChoice('balance', 17433085, {args: {name: 'Ekcel'}}) // You are awesome Ekcel; 17433085 Million Dollars
+let sentence = transChoice('balance', 17433085, {name: 'Ekcel'}) // You are awesome Ekcel; 17433085 Million Dollars
 ```
 
+
+#### Underscore function
 * As well of the `trans()` function, Matice provide `__()` that does the same as the `trans()` function but with this particularity
 not to throw an error when the key is not found but returns an the key itself.
 
 `transChoice()` always throws an error if the key is not found. To change this behaviour, use `__(key, {pluralize: true})`
 
+
+#### Default values
 
 Matice uses your current app locale `app()->getLocale()` a the default locale when generating the translation object with the blade directive `@translations`.
 When generating with command line, it use the one in your `config.app`
@@ -153,8 +173,76 @@ same you define in your config.
 ```
 
 
+## Artisan Command
+Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
 
-* ##### More
+You can run `php artisan matice:generate` in your project to generate a static translations file in `resources/assets/js/matice_translations.js`. You can optionally include a second parameter to override the path and file name (you must pass a complete path, including the file name):
+
+```sh
+php artisan matice:generate "resources/foo.js"
+```
+
+Example `matice_translations.js`, where auth translations exist in `resources/lang/en/auth.php`:
+
+```php
+// resources/lang/en/auth.php
+
+return [
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+]
+```
+
+```js
+// matice_translations.js
+
+const Matice = {
+    translations: {
+      en: {
+        auth: {
+          failed: 'These credentials do not match our records.',
+          throttle: 'Too many login attempts. Please try again in :seconds seconds.'
+        }
+      }
+    },
+    locale: 'en',
+    fallbackLocale: 'en'
+};
+
+export { Matice };
+```
+
+At this point you can use javascript this translations file like usual, paste in your html as well.
+
+## Using with Vue Components
+
+If you want to use the `route()` helper in a Vue component, add this to your `app.js` file:
+
+```typescript
+// app.js
+
+import {__, trans, setLocale, transChoice} from "matice"
+
+Vue.mixin({
+    methods: {
+        $trans: (key: string, options: TranslationOptions = {args: {}, pluralize: false}) => trans(key, options),
+        $__: (key, options) => __(key, options),
+        $transChoice: (key: string, count: number, args: {}) => transChoice(key, count, args)
+        $setLocale: (locale: string) => {
+          setLocale(locale);
+          app.$forceUpdate() // Update the app ui after locale change.
+        }
+    },
+});
+```
+
+Then you can use the methods in your Vue components like so:
+
+```html
+<p>{{ $trans('greet.me') }}</p>
+```
+
+## Dive Deeper
 
 Matice extends the Laravel `Translator` Class. Use `Translator::list()` to returns
 an array representation of all of your app translations.
@@ -166,6 +254,15 @@ $translations = Matice::translations($locale)
 // Or all the translations
 $translations = Matice::translations()
 ```
+
+
+**Environment-based loading of minified matice helper file**
+
+When using the `@translations` Blade directive, Matice will detect the current environment and minify the output if `APP_ENV` is `production`. 
+In this case, `matice.min.js` will be loaded—otherwise, `matice.js` will be used.
+
+
+**Note: Matice works with json translation files as well.**, 
 
 
 ### Testing
