@@ -1,11 +1,11 @@
 <?php
 
-namespace Matice\Matice\Facades;
+namespace Genl\Matice\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Matice\Matice\Skeleton\SkeletonClass
+ * @method static array translations(?string $locale = null) - Load all the translations array.
  */
 class Matice extends Facade
 {

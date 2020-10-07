@@ -2,10 +2,10 @@
 
 namespace Matice\Matice\Tests;
 
+use Genl\Matice\Facades\Matice;
 use Illuminate\Support\Facades\Blade;
-use Matice\Matice\Facades\Matice;
 use Orchestra\Testbench\TestCase;
-use Matice\Matice\MaticeServiceProvider;
+use Genl\Matice\MaticeServiceProvider;
 
 class ManageTranslationTest extends TestCase
 {

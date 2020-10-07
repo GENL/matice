@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Matice\\Matice\\": "src"
+            "Genl\\Matice\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Matice\\Matice\\Tests\\": "tests"
+            "Genl\\Matice\\Tests\\": "tests"
         }
     },
     "scripts": {

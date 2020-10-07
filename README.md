@@ -234,7 +234,7 @@ Vue.mixin({
         $transChoice: (key: string, count: number, args: {}) => transChoice(key, count, args)
         $setLocale: (locale: string) => {
           setLocale(locale);
-          app.$forceUpdate() // Update the app ui after locale change.
+          app.$forceUpdate() // Refresh the vue instance after locale change.
         }
     },
 });
@@ -253,6 +253,8 @@ an array representation of all of your app translations.
 
 If you want to load only translation of a specfic locale, use the matice facade:
 ```php
+use GENL\Matice\Facades\Matice;
+
 $translations = Matice::translations($locale)
 
 // Or all the translations

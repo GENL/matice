@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Matice\Matice;
+namespace Genl\Matice;
 
 
 use Illuminate\Support\Facades\File;
