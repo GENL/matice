@@ -3,18 +3,18 @@ import MaticeLocalizationConfig from "./MaticeLocalizationConfig";
 const assert = require("assert");
 
 export interface TranslationOptions {
-  args: { [key: string]: any },
-  pluralize: boolean
+  args?: { [key: string]: any },
+  pluralize?: boolean
 }
 
 class Localization {
-  private static instance: Localization;
+  private static _instance: Localization;
 
-  public static getInstance(): Localization {
-    if (Localization.instance === undefined) {
-      Localization.instance = new Localization()
+  public static get instance(): Localization {
+    if (Localization._instance === undefined) {
+      Localization._instance = new Localization()
     }
-    return Localization.instance;
+    return Localization._instance;
   }
 
   private constructor() {
@@ -23,6 +23,14 @@ class Localization {
 
     // @ts-ignore
     MaticeLocalizationConfig.fallbackLocale = Matice.fallbackLocale
+  }
+
+  /**
+   * Update the locale
+   * @param locale
+   */
+  public setLocale(locale: string) {
+    MaticeLocalizationConfig.locale = locale
   }
 
   /**
@@ -53,7 +61,7 @@ class Localization {
    * Translate the given key.
    */
   public trans(key: string, silentNotFoundError: boolean, options: TranslationOptions = {args: {}, pluralize: false}) {
-    const args = options.args;
+    const args = options.args || {};
 
     let sentence = this.findSentence(key, silentNotFoundError)
 
@@ -88,10 +96,11 @@ class Localization {
 
     // Manage multiple number range.
     let ranges: { min: number, max: number, part: string }[] = [];
+    const pattern = /^(\[(\s*\d+\s*)+,(\s*(\d+|\*)\s*)])|({\s*\d+\s*})/
 
     for (let i = 0; i < parts.length; i++) {
-      const part = parts[i]
-      let matched = part.match(/^(\[(\s*\d+\s*)+,(\s*(\d+|\*)\s*)])|({\s*\d+\s*})/)
+      let part = parts[i]
+      let matched = part.match(pattern)
 
       if (matched === null) {
         // If range is found, use the part index as the range.
@@ -108,6 +117,9 @@ class Localization {
         return Number.isInteger(parsed) ? parsed : count + 1
       })
 
+      // Lets make sure to remove the range symbols in the parts.
+      parts[i] = part = part.replace(pattern, '')
+
       ranges.push(
         rangeNumbers.length == 1
           ? {min: rangeNumbers[0], max: rangeNumbers[0], part}
@@ -117,15 +129,15 @@ class Localization {
 
     let foundInRange = false;
     // Compare the part with the range to choose the pluralization.
-    if (count === 0) {
+    // -------  ------
+    // Return the first part if count is zero or negative
+    if (count <= 0) {
       sentence = parts[0]
     } else {
-      for (const range in ranges) {
-        // It means there's
-        // @ts-ignore
-        if (count >= range.min || count <= range.max) {
+      for (const range of ranges) {
+        // If count is in the range, return the corresponding text part.
+        if (count >= range.min && count <= range.max) {
           // count is in the range.
-          // @ts-ignore
           sentence = range.part
           foundInRange = true
           break;
@@ -153,29 +165,40 @@ class Localization {
    * @private
    */
   private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale): string {
-    const translations: { [key: string]: any } = this.translations(locale);
+    const translations: { [key: string]: any } = this.translations(locale)
 
     // At first [link] is a [Map<String, dynamic>] but at the end, it can be a [String],
     // the sentences.
-    let link = translations;
+    let link = translations
 
-    key.split('.').forEach((_key) => {
+    const parts = key.split('.')
+
+    for (const part of parts) {
       // Get the new json until we fall on the last key of
       // the array which should point to a String.
       try {
         // Make sure the _key exist.
         // If not this throws an error that is handled by the "catch" block
         // @ts-ignore
-        assert(link[_key]);
+        assert(link[part])
         // @ts-ignore
-        link = link[_key];
+        link = link[part]
       } catch (e) {
-        // If sentence not found, try with the fallback locale.
+        // If key not found, try with the fallback locale.
         if (locale !== MaticeLocalizationConfig.fallbackLocale) {
-          return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale);
+          return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale)
         }
-        throw `Translation key not found : "${key}" -> Exactly "${_key}" not found`;
+
+        // If the key not found and the silent mode is on, return the key,
+        if (silentNotFoundError) return key;
+
+        // If key not found and the silent mode is off, throw error,
+        throw `Translation key not found : "${key}" -> Exactly "${part}" not found`
       }
+    }
+
+    key.split('.').forEach((_key) => {
+
     });
 
     return link.toString();
@@ -189,7 +212,7 @@ class Localization {
  * @param options
  */
 export function trans(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
-  return Localization.getInstance().trans(key, false, options);
+  return Localization.instance.trans(key, false, options);
 }
 
 /**
@@ -200,5 +223,18 @@ export function trans(key: string, options: TranslationOptions = {args: {}, plur
  * @private
  */
 export function __(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
-  return Localization.getInstance().trans(key, true, options);
+  return Localization.instance.trans(key, true, options);
+}
+
+/**
+ * An helper to the trans function but with the pluralization mode activated by default.
+ * @param key
+ * @param options
+ */
+export function transChoice(key: string, options: {args: {}}) {
+  return trans(key, {args: options.args, pluralize: true});
+}
+
+export function setLocale(locale: string) {
+  Localization.instance.setLocale(locale)
 }
