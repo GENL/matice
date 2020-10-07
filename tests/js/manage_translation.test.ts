@@ -1,5 +1,4 @@
-import {__, trans} from "../../src/js";
-import {setLocale, transChoice} from "../../src/js/Localization/core";
+import {__, trans, setLocale, transChoice} from "../../src/js";
 
 // @ts-ignore
 global.Matice = {
@@ -69,6 +68,6 @@ test('Pluralize the sentence well', () => {
   sentence = trans('balance', {args: {count: 1000000}, pluralize: true})
   expect(sentence).toEqual(" You are awesome :name; 1000000 Million Dollars")
 
-  sentence = transChoice('balance', {args: {count: 8578442, name: 'Ekcel'}})
+  sentence = transChoice('balance', 8578442, {args: {name: 'Ekcel'}})
   expect(sentence).toEqual(" You are awesome Ekcel; 8578442 Million Dollars")
 });

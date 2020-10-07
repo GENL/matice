@@ -220,7 +220,6 @@ export function trans(key: string, options: TranslationOptions = {args: {}, plur
  * the sentence was not found, instead of throwing an exception.
  * @param key
  * @param options
- * @private
  */
 export function __(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
   return Localization.instance.trans(key, true, options);
@@ -229,10 +228,11 @@ export function __(key: string, options: TranslationOptions = {args: {}, plurali
 /**
  * An helper to the trans function but with the pluralization mode activated by default.
  * @param key
+ * @param count
  * @param options
  */
-export function transChoice(key: string, options: {args: {}}) {
-  return trans(key, {args: options.args, pluralize: true});
+export function transChoice(key: string, count: number, options: {args: {}}) {
+  return trans(key, {args: {...options.args, count}, pluralize: true});
 }
 
 export function setLocale(locale: string) {

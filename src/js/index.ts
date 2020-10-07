@@ -1,3 +1,3 @@
-export {trans, __} from './Localization/core'
+export {trans, __, setLocale, transChoice} from './Localization/core'
 
 export {default as MaticeLocalizationConfig} from './Localization/MaticeLocalizationConfig'
