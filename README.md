@@ -60,7 +60,7 @@ php artisan matice:generate
 
 **TypeScript support**
 
-Matice is fully written in TypeScript. So it is fully compatible with TypeScript Projects
+Matice is fully written in TypeScript. So it's compatible with TypeScript Projects.
 
 
 
@@ -103,8 +103,8 @@ global.Matice = {
       }
     }
   },
-  "locale": "en",
-  "fallbackLocale": "en",
+  locale: "en",
+  fallbackLocale: "en",
 }
 ```
 
@@ -123,6 +123,10 @@ sentence = trans('greet.someone', {args: {count: 1, pluralize: true}}) // Hello 
 // Advanced pluralization with range
 sentence = trans('balance', {args: {count: 0}, pluralize: true}) // You're broke
 sentence = trans('balance', {args: {count: 3000}, pluralize: true}) // a middle man
+
+// update the locale
+setLocale('fr')
+sentence = trans('greet.me') // Bonjour!
 ```
 
 
@@ -156,6 +160,10 @@ not to throw an error when the key is not found but returns an the key itself.
 
 `transChoice()` always throws an error if the key is not found. To change this behaviour, use `__(key, {pluralize: true})`
 
+```js
+sentence = trans('greet.unknown') // -> throws an error with a message.
+sentence = __('greet.unknown') // greet.unknown
+```
 
 #### Default values
 
