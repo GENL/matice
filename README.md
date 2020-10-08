@@ -16,6 +16,7 @@ functions which you can use to access your translations in your JavaScript.
 - [Usage](#usage)
     - [Examples](#examples)
     - [trans](#trans)
+    - [Update locale](#update-locale)
     - [Pluralization](#pluralization)
     - [Trans Choice](#trans-choice)
     - [underscore function](#underscore-function)
@@ -117,18 +118,17 @@ let sentence = ''
 sentence = trans('greet.me') // Hello!
 
 // With parameters
-sentence = trans('greet.someone', {args: {count: 0, pluralize: true}}) // Hello Ekcel!
-sentence = trans('greet.someone', {args: {count: 1, pluralize: true}}) // Hello everyone!
+sentence = trans('greet.someone', {args: {name: "Ekcel"}}) // Hello Ekcel!
+```
 
-// Advanced pluralization with range
-sentence = trans('balance', {args: {count: 0}, pluralize: true}) // You're broke
-sentence = trans('balance', {args: {count: 3000}, pluralize: true}) // a middle man
+#### update-locale
 
+Matice expose `setLocale` function to uchange the locale that is used by the `trans` function.
+```
 // update the locale
 setLocale('fr')
 sentence = trans('greet.me') // Bonjour!
 ```
-
 
 #### Pluralization 
 
@@ -136,7 +136,12 @@ Pluralization depends on the `count` argument.
 
 ```javascript
 // Pluralization
-sentence = trans('greet.people', {args: {name: 'Ekcel'}, pluralize: true}) // Hello Ekcel!
+sentence = trans('greet.people', {args: {count: 0}, pluralize: true}) // Hello Ekcel!
+sentence = trans('greet.people', {args: {count: 2}, pluralize: true}) // Hello everyone!
+
+// Advanced pluralization with range
+sentence = trans('balance', {args: {count: 0}, pluralize: true}) // You're broke
+sentence = trans('balance', {args: {count: 3000}, pluralize: true}) // a middle man
 ```
 
 #### Trans Choice
@@ -255,6 +260,7 @@ If you want to load only translation of a specfic locale, use the matice facade:
 ```php
 use GENL\Matice\Facades\Matice;
 
+// Or load translations for a specific locale.
 $translations = Matice::translations($locale)
 
 // Or all the translations
