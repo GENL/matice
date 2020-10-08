@@ -2,12 +2,12 @@
 
 namespace Genl\Matice;
 
+use Genl\Matice\Commands\TranslationsGeneratorCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
-use phpDocumentor\Reflection\Types\Self_;
 
 class MaticeServiceProvider extends ServiceProvider
 {

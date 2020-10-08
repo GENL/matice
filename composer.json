@@ -1,28 +1,27 @@
 {
-    "name": "matice/matice",
+    "name": "genl/matice",
     "description": "Use your Laravel translations in JavaScript. Generates a Blade directive exporting all of your Laravel translations and provides a nice trans() helper function in JavaScript.",
     "keywords": [
-        "matice",
         "matice",
         "laravel",
         "translations"
     ],
-    "homepage": "https://github.com/matice/matice",
+    "homepage": "https://github.com/genl/matice",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
             "name": "GENL",
             "email": "bigcodole@gmail.com",
-            "role": "Developer"
+            "homepage": "https://ekcel-portofolio.firebaseapp.com"
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
-        "illuminate/support": "^6.0"
+        "php": "^7.3|^8.0",
+        "laravel/framework": "^7.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^5.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
@@ -49,7 +48,7 @@
                 "Genl\\Matice\\MaticeServiceProvider"
             ],
             "aliases": {
-                "Matice": "Genl\\Matice\\MaticeFacade"
+                "Matice": "Genl\\Matice\\Facades\\Matice"
             }
         }
     }

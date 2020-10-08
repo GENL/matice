@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Genl\Matice;
+namespace Genl\Matice\Commands;
 
 
 use Genl\Matice\Facades\Matice;

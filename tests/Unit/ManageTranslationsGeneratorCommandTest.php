@@ -23,10 +23,10 @@ class ManageTranslationsGeneratorCommandTest extends TestCase
      */
     function fileIsCreatedWhenMaticeGenerateIsCalled()
     {
+        // dd(collect(Artisan::all())->map(fn ($command) => $command->getName()));
         Artisan::call('matice:generate');
 
         $this->assertFileExists(base_path('resources/assets/js/matice_translations.js'));
     }
-
 
 }
