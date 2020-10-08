@@ -46,10 +46,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Matice\\Matice\\MaticeServiceProvider"
+                "Genl\\Matice\\MaticeServiceProvider"
             ],
             "aliases": {
-                "Matice": "Matice\\Matice\\MaticeFacade"
+                "Matice": "Genl\\Matice\\MaticeFacade"
             }
         }
     }

@@ -1,20 +1,22 @@
 <?php
 
-namespace Matice\Matice\Tests;
+namespace Genl\Matice\Tests\Unit;
 
 use Genl\Matice\Facades\Matice;
+use Genl\Matice\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
-use Orchestra\Testbench\TestCase;
 use Genl\Matice\MaticeServiceProvider;
 
 class ManageTranslationTest extends TestCase
 {
 
+    protected $langDir = __DIR__ . ('/../../tests/assets/lang');
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        config()->set('config.lang_directory', './assets/lang');
+        config()->set('config.lang_directory', $this->langDir);
     }
 
     protected function getPackageProviders($app)
@@ -28,7 +30,8 @@ class ManageTranslationTest extends TestCase
     public function loadTranslations()
     {
         // $translations = app()->make('matice')->translations('./assets/lang');
-        $translations = Matice::translations('./assets/lang');
+        // dd(__DIR__ . ('/test/assets/lang'));
+        $translations = Matice::translations($this->langDir);
 
         $this->assertIsArray($translations);
 

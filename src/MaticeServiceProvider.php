@@ -45,7 +45,9 @@ class MaticeServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                TranslationsGeneratorCommand::class,
+            ]);
         }
 
         Translator::macro('list', function () {

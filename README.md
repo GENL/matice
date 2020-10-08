@@ -274,6 +274,11 @@ In this case, `matice.min.js` will be loaded—otherwise, `matice.js` will be us
 ### Testing
 
 ``` bash
+// --  laravel test --
+composer test
+
+// -- js test --
+
 // With yarn
 yarn test
 

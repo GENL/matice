@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array translations(?string $locale = null) - Load all the translations array.
+ *
+ * @see \Genl\Matice\BladeTranslationsGenerator
  */
 class Matice extends Facade
 {
