@@ -5,7 +5,7 @@ namespace Genl\Matice\Tests\Unit;
 use Genl\Matice\Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 
-class ManageTranslationsGeneratorCommandTest extends TestCase
+class ManageTranslationsGeneratorCommandTest // extends TestCase
 {
     protected function tearDown(): void
     {
@@ -16,95 +16,5 @@ class ManageTranslationsGeneratorCommandTest extends TestCase
         }
 
         parent::tearDown();
-    }
-
-    /**
-     * @test
-     */
-    function fileIsCreatedWhenMaticeGenerateIsCalled()
-    {
-        // dd(collect(Artisan::all())->map(fn ($command) => $command->getName()));
-        Artisan::call('matice:generate');
-
-        $this->assertFileExists(base_path('resources/assets/js/matice_translations.js'));
-    }
-
-    /** @test */
-    function file_is_created_when_ziggy_generate_is_called_from_outside_project_root()
-    {
-        chdir('..');
-        $this->assertNotEquals(base_path(), getcwd());
-
-        Artisan::call('ziggy:generate');
-
-        $this->assertFileExists(base_path('resources/assets/js/ziggy.js'));
-    }
-
-    /** @test */
-    function file_is_created_with_the_expected_structure_when_named_routes_exist()
-    {
-        $router = app('router');
-
-        $router->get('/posts/{post}/comments', function () {
-            return '';
-        })
-            ->name('postComments.index');
-
-        $router->getRoutes()->refreshNameLookups();
-
-        Artisan::call('ziggy:generate');
-
-        $this->assertFileEquals('./tests/assets/js/ziggy.js', base_path('resources/assets/js/ziggy.js'));
-    }
-
-    /** @test */
-    function file_is_created_with_a_custom_url()
-    {
-        $router = app('router');
-
-        $router->get('/posts/{post}/comments', function () {
-            return '';
-        })
-            ->name('postComments.index');
-
-        $router->getRoutes()->refreshNameLookups();
-
-        Artisan::call('ziggy:generate', ['--url' => 'http://example.org']);
-
-        $this->assertFileEquals('./tests/assets/js/custom-url.js', base_path('resources/assets/js/ziggy.js'));
-    }
-
-    /** @test */
-    function file_is_created_with_the_expected_group()
-    {
-        app()['config']->set('ziggy', [
-            'blacklist' => ['admin.*'],
-
-            'groups' => [
-                'admin' => ['admin.*'],
-            ],
-        ]);
-
-        $router = app('router');
-
-        $router->get('/posts/{post}/comments', function () {
-            return '';
-        })
-            ->name('postComments.index');
-
-        $router->get('/admin', function () {
-            return '';
-        })
-            ->name('admin.dashboard');
-
-        $router->getRoutes()->refreshNameLookups();
-
-        Artisan::call('ziggy:generate');
-
-        $this->assertFileEquals('./tests/assets/js/ziggy.js', base_path('resources/assets/js/ziggy.js'));
-
-        Artisan::call('ziggy:generate', ['path' => 'resources/assets/js/admin.js', '--group' => 'admin']);
-
-        $this->assertFileEquals('./tests/assets/js/admin.js', base_path('resources/assets/js/admin.js'));
     }
 }

@@ -5,6 +5,6 @@
  */
 return [
 
-    'lang_directory' => 'resources/lang'
+    'lang_directory' => resource_path('lang')
 
 ];

@@ -15,25 +15,36 @@ class BladeTranslationsGenerator
      *
      * @param string|null $locale
      *      the locale language to load. All translation are loaded if locale is null. Default to null
+     * @param bool $wrapInHtml
      * @return string
      */
-    public function generate(?string $locale = null) : string
+    public function generate(?string $locale = null, bool $wrapInHtml = true): string
     {
-        $translations = json_encode($this->translations());
+        $translations = json_encode($this->translations($locale));
         $locale = app()->getLocale();
-        $fallbackLocale = config('config.app.fallback_locale');
+        $fallbackLocale = config('app.fallback_locale');
 
-        /** @noinspection BadExpressionStatementJS */
-        return <<<EOT
-<script type="text/javascript">
-// noinspection JSAnnotator
+        $object = <<<EOT
 const Matice = {
-    translations: $translations,
-    locale: $locale,
-    fallbackLocale: $fallbackLocale
+  locale: "$locale",
+  fallbackLocale: "$fallbackLocale",
+  translations: $translations 
 }
-</script>
 EOT;
+
+        if ($wrapInHtml) {
+            /** @noinspection BadExpressionStatementJS */
+            return <<<EOT
+<!-- Matice Laravel Translations generated -->
+<div id="matice-translations">
+  <script type="text/javascript">
+    $object
+  </script>
+</div>
+EOT;
+        } else {
+            return $object;
+        }
     }
 
     /**

@@ -16,7 +16,7 @@ class ManageTranslationTest extends TestCase
     {
         parent::setUp();
 
-        config()->set('config.lang_directory', $this->langDir);
+        config()->set('matice.lang_directory', $this->langDir);
     }
 
     protected function getPackageProviders($app)

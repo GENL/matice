@@ -51,7 +51,7 @@ class MaticeServiceProvider extends ServiceProvider
         }
 
         Translator::macro('list', function () {
-            return MaticeServiceProvider::makeFolderFilesTree(config('config.lang_directory'));
+            return MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));
         });
 
         Blade::directive('translations', function ($locale) {
@@ -87,7 +87,7 @@ class MaticeServiceProvider extends ServiceProvider
         $ffs = scandir($dir);
 
         foreach ($ffs as $ff) {
-            if (!Str::startsWith($ff, '.')) {
+            if (! Str::startsWith($ff, '.')) {
 
                 $extension = '.' . Str::afterLast($ff, '.');
 

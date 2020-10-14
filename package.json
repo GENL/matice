@@ -1,5 +1,5 @@
 {
-  "name": "matice",
+  "name": "matice-js",
   "version": "1.0.0",
   "description": "Matice - Use your Laravel translations in JavaScript",
   "main": "dist/index.js",
@@ -31,7 +31,6 @@
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.2",
     "jest": "^26.5.2",
-    "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3"
+    "ts-jest": "^26.4.1"
   }
 }

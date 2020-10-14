@@ -9,6 +9,7 @@
     "homepage": "https://github.com/genl/matice",
     "license": "MIT",
     "type": "library",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "GENL",
@@ -17,8 +18,8 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
-        "laravel/framework": "^7.0"
+
+        "laravel/framework": ">=5.4@dev"
     },
     "require-dev": {
         "orchestra/testbench": "^5.0",

@@ -121,10 +121,12 @@ sentence = trans('greet.me') // Hello!
 sentence = trans('greet.someone', {args: {name: "Ekcel"}}) // Hello Ekcel!
 ```
 
-#### update-locale
+#### Update locale
 
 Matice expose `setLocale` function to uchange the locale that is used by the `trans` function.
-```js
+```typescript
+import { setLocale } from "matice"
+
 // update the locale
 setLocale('fr')
 sentence = trans('greet.me') // Bonjour!
