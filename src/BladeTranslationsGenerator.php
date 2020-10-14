@@ -4,8 +4,8 @@
 namespace Genl\Matice;
 
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
 
 class BladeTranslationsGenerator
@@ -16,10 +16,32 @@ class BladeTranslationsGenerator
      * @param string|null $locale
      *      the locale language to load. All translation are loaded if locale is null. Default to null
      * @param bool $wrapInHtml
+     * @param bool $useCache - Whether to use the cached generated script or to generate a new one.
      * @return string
      */
-    public function generate(?string $locale = null, bool $wrapInHtml = true): string
+    public function generate(?string $locale = null, bool $wrapInHtml = true, bool $useCache = false): string
     {
+        $path = config('matice.generate_translations_path');
+        if ($useCache) {
+            // Generate the file if it does not exits
+            if (! File::exists($path)) {
+                Artisan::call('matice:generate');
+            }
+
+            $generated = File::get($path);
+
+            return <<<EOT
+<!-- Matice Laravel Translations generated -->
+<!-- Used cached translations at: $path -->
+<div id="matice-translations">
+  <script type="text/javascript">
+    $generated
+  </script>
+</div>
+EOT;
+
+        }
+
         $translations = json_encode($this->translations($locale));
         $locale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');

@@ -16,7 +16,11 @@ class ManageTranslationTest extends TestCase
     {
         parent::setUp();
 
-        config()->set('matice.lang_directory', $this->langDir);
+        config([
+            'matice.lang_directory' => $this->langDir,
+            'matice.use_generated_translations_file_in_prod' => true,
+            'matice.generate_translations_path' => 'fake/assets/js/matice_translations.js'
+        ]);
     }
 
     protected function getPackageProviders($app)
@@ -49,12 +53,22 @@ class ManageTranslationTest extends TestCase
     {
         $jsOutput = Matice::generate();
 
+        $this->assertStringContainsString('<script type="text/javascript">', $jsOutput);
+
+
+        // ================== Test the blade directive ===================
+
         $bladeOutPut1 = Blade::compileString('@translations');
         $bladeOutPut2 = Blade::compileString('@translations(\'en\')');
 
-        $this->assertTrue("<?php echo app()->make('matice')->generate(); ?>" === $bladeOutPut1);
-        $this->assertTrue("<?php echo app()->make('matice')->generate('en'); ?>" === $bladeOutPut2);
+        $this->app->env = 'production';
 
-        $this->assertStringContainsString('<script type="text/javascript">', $jsOutput);
+        $bladeOutPut3 = Blade::compileString('@translations()');
+
+        $this->app->env = 'testing';
+
+        $this->assertTrue("<?php echo app()->make('matice')->generate(null, true, false); ?>" === $bladeOutPut1);
+        $this->assertTrue("<?php echo app()->make('matice')->generate('en', true, false); ?>" === $bladeOutPut2);
+        $this->assertTrue("<?php echo app()->make('matice')->generate(null, true, true); ?>" === $bladeOutPut3);
     }
 }

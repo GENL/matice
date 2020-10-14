@@ -33,8 +33,9 @@ You can install the package via composer:
 composer require genl/matice
 ```
 
-1. If using Laravel 5.4, add `GENL\Matice\MaticeServiceProvider::class` to the `providers` array in your `config/app.php`.
-1. Include our Blade directive (`@translations`) somewhere in your template before your main application JavaScript is loaded—likely in the header somewhere.
+1. ##### If using Laravel 5.4, add `GENL\Matice\MaticeServiceProvider::class` to the `providers` array in your `config/app.php`.
+
+1. ##### Include our Blade directive (`@translations`) somewhere in your template before your main application JavaScript is loaded—likely in the header somewhere.
 
 Matice is available as a NPM package, matice-js
 that exposes the `trans()` function for use in frontend apps that 
@@ -50,7 +51,10 @@ or load it from a CDN:
 <script defer src="https://unpkg.com/matice-js@1.0.x/dist/js/matice.min.js"></script>
 ```
 
-* Note that you still have to generate your translation file and make it available to your frontend app by injecting is into you html file or api call or other.
+* Note that you still have to generate your translations file and make 
+it available to your frontend app by using `@translations` directive 
+or injecting is into you html file 
+or api call or other.
 
 To generate translation file use:
 
@@ -84,29 +88,30 @@ import the `trans()` function like follow:
 import { trans } from "matice";
 ```
 
-Let's assume we have this Matice object:
+Let's assume we have this translations:
 
-```javascript
-global.Matice = {
-  translations: {
-    en: {
-      greet: {
-        me: "Hello!",
-        someone: 'Hello :name!',
-        meMore: "Hello Ekcel Henrich!",
-        people: "Hello Ekcel!|Hello everyone!",
-      },
-      balance: "{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars"
-    },
-    fr: {
-      greet: {
-        me: "Bonjour!"
-      }
-    }
-  },
-  locale: "en",
-  fallbackLocale: "en",
-}
+```php
+// resources/lang/en/custom.php
+
+return [
+    'greet' => [
+        'me': 'Hello!',
+        'someone': 'Hello :name!',
+        'me_more': 'Hello Ekcel Henrich!',
+        'people': 'Hello Ekcel!|Hello everyone!',
+    ],
+    balance: '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars'
+];
+```
+
+```php
+// resources/lang/fr/custom.php
+
+return [
+    'greet' => [
+        me: 'Bonjour!'
+    ]
+];
 ```
 
 #### trans
@@ -236,15 +241,15 @@ import {__, trans, setLocale, transChoice} from "matice"
 
 Vue.mixin({
     methods: {
-        $trans: (key: string, options: TranslationOptions = {args: {}, pluralize: false}) => trans(key, options),
-        $__: (key, options) => __(key, options),
-        $transChoice: (key: string, count: number, args: {}) => transChoice(key, count, args)
+        $trans: trans,
+        $__: __,
+        $transChoice: transChoice,
         $setLocale: (locale: string) => {
           setLocale(locale);
           app.$forceUpdate() // Refresh the vue instance after locale change.
         }
     },
-});
+})
 ```
 
 Then you can use the methods in your Vue components like so:

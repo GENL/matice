@@ -55,7 +55,14 @@ class MaticeServiceProvider extends ServiceProvider
         });
 
         Blade::directive('translations', function ($locale) {
-            return "<?php echo app()->make('matice')->generate($locale); ?>";
+            $locale = $locale ?: 'null';
+
+            $useCache = config('matice.use_generated_translations_file_in_prod') === true
+                && app()->isProduction()
+                ? 'true' : 'false';
+
+            return "<?php echo app()->make('matice')->generate($locale, true, true); ?>";
+            /*return "<?php echo 'Matice kaka'; ?>";*/
         });
     }
 
