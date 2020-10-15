@@ -1,9 +1,9 @@
 {
-  "name": "matice-js",
+  "name": "matice",
   "version": "1.0.0",
   "description": "Matice - Use your Laravel translations in JavaScript",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/matice.js",
+  "types": "dist/matice.d.ts",
   "directories": {
     "test": "jest"
   },
@@ -17,10 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GENL/matice.git"
+    "url": "https://github.com/GENL/matice.git"
   },
-  "keywords": [],
-  "author": "Ekcel Henrich",
+  "keywords": [
+    "matice",
+    "laravel",
+    "translations"
+  ],
+  "author": "Ekcel Ekoumelong",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/GENL/matice/issues"
@@ -32,5 +36,9 @@
     "@types/node": "^14.11.2",
     "jest": "^26.5.2",
     "ts-jest": "^26.4.1"
+  },
+  "dependencies": {
+    "global": "^4.4.0",
+    "uglify-js": "^3.11.2"
   }
 }

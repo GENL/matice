@@ -9,10 +9,9 @@
     "homepage": "https://github.com/genl/matice",
     "license": "MIT",
     "type": "library",
-    "version": "1.0.0",
     "authors": [
         {
-            "name": "GENL",
+            "name": "Ekcel Ekoumelong",
             "email": "bigcodole@gmail.com",
             "homepage": "https://ekcel-portofolio.firebaseapp.com"
         }

@@ -33,7 +33,8 @@ class TranslationsGeneratorCommand extends Command
 
         $generatedTranslations = Matice::generate(null, false, false);
 
-        $generatedTranslations = "/*
+        $generatedTranslations = "
+/*
 |--------------------------------------------------------------------------
 | Generated Laravel translations
 |--------------------------------------------------------------------------
@@ -47,7 +48,7 @@ class TranslationsGeneratorCommand extends Command
 
         File::put($path, $generatedTranslations);
 
-        $this->info("Matice translations file generated at ${path} ");
+        $this->info("Matice translations file generated at $path");
     }
 
     protected function makeDirectory(string $path)
@@ -55,6 +56,5 @@ class TranslationsGeneratorCommand extends Command
         if (! File::isDirectory(dirname($path))) {
             File::makeDirectory(dirname($path), 0777, true, true);
         }
-        return $path;
     }
 }
