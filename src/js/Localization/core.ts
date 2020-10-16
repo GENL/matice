@@ -27,6 +27,9 @@ class Localization {
 
     // @ts-ignore
     MaticeLocalizationConfig.fallbackLocale = Matice.fallbackLocale
+
+    // @ts-ignore
+    MaticeLocalizationConfig.locales = Object.keys(Matice.translations)
   }
 
   /**
@@ -35,6 +38,20 @@ class Localization {
    */
   public setLocale(locale: string) {
     MaticeLocalizationConfig.locale = locale
+  }
+
+  /**
+   * Retrieve the current locale
+   */
+  public getLocale() {
+    return MaticeLocalizationConfig.locale
+  }
+
+  /**
+   * Return a listing of the locales.
+   */
+  public locales() {
+    return MaticeLocalizationConfig.locales
   }
 
   /**
@@ -210,6 +227,16 @@ class Localization {
 }
 
 
+
+/*
+|
+| ----------------------------------
+| Exports
+| ----------------------------------
+|
+*/
+
+
 /**
  * Translate the given message.
  * @param key
@@ -239,6 +266,25 @@ export function transChoice(key: string, count: number, args: {}) {
   return trans(key, {args: {...args, count}, pluralize: true});
 }
 
+/**
+ * Update the locale
+ * @param locale
+ */
 export function setLocale(locale: string) {
   Localization.instance.setLocale(locale)
+
+}
+
+/**
+ * Retrieve the current locale
+ */
+export function getLocale() {
+  return Localization.instance.getLocale()
+}
+
+/**
+ * Return a listing of the locales.
+ */
+export function locales() {
+  return Localization.instance.locales()
 }

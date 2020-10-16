@@ -1,4 +1,4 @@
-import {__, trans, setLocale, transChoice} from "../../src/js/matice";
+import {__, trans, setLocale, transChoice, locales} from "../../src/js/matice";
 
 // @ts-ignore
 global.Matice = {
@@ -24,6 +24,8 @@ global.Matice = {
 // const translation = require("../../src/js")
 
 test('Retrieves simple sentence.', () => {
+  expect(locales()).toEqual(['en', 'fr'])
+
   let sentence = trans('greet.me')
   expect(sentence).toEqual("Hello!")
 

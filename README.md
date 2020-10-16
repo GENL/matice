@@ -194,7 +194,7 @@ same you define in your config.
 ```
 
 #### Retrieve the current locale
-To retrieve the current locale, use:
+To locales information, matice exposes the `MaticeLocalizationConfig` class :
 ```js
 import { MaticeLocalizationConfig } from "matice"
 
@@ -202,9 +202,20 @@ const locale = MaticeLocalizationConfig.locale // 'en'
 
 const fallbackLocale = MaticeLocalizationConfig.fallbackLocale // 'en'
 
-
+const locales = MaticeLocalizationConfig.locales // ['en', 'fr']
 ```
 
+Matice also provides helpers to deal with locales information:
+```js
+import { setLocale, getLocale, locales } from "matice"
+
+// Update the locale
+setLocale('fr') //
+
+const locale = getLocale() // 'en'
+
+const locales = locales() // ['en', 'fr']
+``` 
 
 ## Artisan Command
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
@@ -254,7 +265,7 @@ If you want to use the `route()` helper in a Vue component, add this to your `ap
 ```typescript
 // app.js
 
-import {__, trans, setLocale, transChoice, MaticeLocalizationConfig} from "matice"
+import {__, trans, setLocale, getLocale, transChoice, MaticeLocalizationConfig, locales} from "matice"
 
 Vue.mixin({
     methods: {
@@ -267,7 +278,11 @@ Vue.mixin({
         },
         // The current locale
         $locale() {
-            return MaticeLocalizationConfig.locale
+            return getLocale()
+        },
+        // A listing of the available locales
+        $locales() {
+            return locales()
         }
     },
 })
