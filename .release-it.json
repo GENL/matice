@@ -6,6 +6,6 @@
     "before:init": ["yarn test"]
   },
   "github": {
-    "release": true
+    "release": false
   }
 }
