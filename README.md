@@ -34,8 +34,6 @@ You can install the package via composer:
 composer require genl/matice
 ```
 
-1. ##### If using Laravel 5.4, add `GENL\Matice\MaticeServiceProvider::class` to the `providers` array in your `config/app.php`.
-
 1. ##### Include our Blade directive (`@translations`) somewhere in your template before your main application JavaScript is loaded—likely in the header somewhere.
 
 Matice is available as a NPM package, matice-js
