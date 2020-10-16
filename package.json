@@ -1,6 +1,6 @@
 {
   "name": "matice",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Matice - Use your Laravel translations in JavaScript",
   "main": "dist/matice.js",
   "types": "dist/matice.d.ts",
