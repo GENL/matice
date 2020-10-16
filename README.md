@@ -1,9 +1,10 @@
 # Use your Laravel translations in JavaScript
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/matice/matice.svg?style=flat-square)](https://packagist.org/packages/matice/matice)
-[![Build Status](https://img.shields.io/travis/matice/matice/master.svg?style=flat-square)](https://travis-ci.org/matice/matice)
-[![Quality Score](https://img.shields.io/scrutinizer/g/matice/matice.svg?style=flat-square)](https://scrutinizer-ci.com/g/matice/matice)
-[![Total Downloads](https://img.shields.io/packagist/dt/matice/matice.svg?style=flat-square)](https://packagist.org/packages/matice/matice)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice)
+[![Latest Version on NPM](https://img.shields.io/npm/v/matice.svg?style=flat)](https://npmjs.com/package/matice)
+[![GitHub Actions Status](https://img.shields.io/github/workflow/status/genl/matice/Tests?label=tests&style=flat)](https://github.com/genl/matice/actions?query=workflow:Tests+branch:master)
+[![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://www.npmjs.com/package/matice)
+[![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
 Matice creates a Blade directive that you can include in your views. 
 It will export a JavaScript object of your application's translations,
@@ -35,8 +36,12 @@ composer require genl/matice
 ```
 
 1. ##### Include our Blade directive (`@translations`) somewhere in your template before your main application JavaScript is loaded—likely in the header somewhere.
+1. ##### Publish the vendor if you want to customize config: 
+```php
+php artisan vendor:publish --provider=Genl\Matice\MaticeServiceProvider
+```
 
-Matice is available as a NPM package, matice-js
+Matice is available as a NPM package `matice`
 that exposes the `trans()` function for use in frontend apps that 
 are not using Blade. 
 You can install the NPM package with:
@@ -312,10 +317,10 @@ $translations = Matice::translations()
 **Environment-based loading of minified matice helper file**
 
 When using the `@translations` Blade directive, Matice will detect the current environment and minify the output if `APP_ENV` is `production`. 
-In this case, `matice.min.js` will be loaded—otherwise, `matice.js` will be used.
+In this case matice will run `php artisan matice:generate` to generate translations file (if not exists) and use it — otherwise, translations will always be re-loaded.
 
 
-**Note: Matice works with json translation files as well.**, 
+######**Note: Matice works with json translation files as well as with php files.**, 
 
 
 ### Testing
