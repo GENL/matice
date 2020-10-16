@@ -65,7 +65,7 @@ jobs:
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit --testdox --colors=always
 
-      - name: Run Mocha tests
+      - name: Run Jest tests
         run: npm test
 
 
