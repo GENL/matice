@@ -1,4 +1,4 @@
-import {__, trans, setLocale, transChoice} from "../../src/js";
+import {__, trans, setLocale, transChoice} from "../../src/js/matice";
 
 // @ts-ignore
 global.Matice = {

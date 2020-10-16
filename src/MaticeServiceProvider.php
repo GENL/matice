@@ -61,7 +61,7 @@ class MaticeServiceProvider extends ServiceProvider
                 && app()->isProduction()
                 ? 'true' : 'false';
 
-            return "<?php echo app()->make('matice')->generate($locale, true, true); ?>";
+            return "<?php echo app()->make('matice')->generate($locale, true, $useCache); ?>";
             /*return "<?php echo 'Matice kaka'; ?>";*/
         });
     }

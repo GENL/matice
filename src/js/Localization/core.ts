@@ -1,6 +1,10 @@
 import MaticeLocalizationConfig from "./MaticeLocalizationConfig";
 
-const assert = require("assert");
+// const assert = require("assert");
+
+function assert(value: boolean, message: string) {
+  if (! value) throw message
+}
 
 export interface TranslationOptions {
   args?: { [key: string]: any },
