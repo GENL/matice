@@ -21,6 +21,7 @@ functions which you can use to access your translations in your JavaScript.
     - [Trans Choice](#trans-choice)
     - [underscore function](#underscore-function)
     - [Default Values](#default-values)
+    - [Retrieve the current locale](#retrieve-the-current-locale)
 - [Artisan Command](#artisan-command)
 - [Using with Vue Components](#using-with-vue-components)
 - [Dive Deeper](#dive-deeper)
@@ -42,13 +43,17 @@ that exposes the `trans()` function for use in frontend apps that
 are not using Blade. 
 You can install the NPM package with:
 ```bash
-npm install matice-js
+// With yarn
+yarn add matice
+
+With npm
+npm install matice
 ```
 
 or load it from a CDN:
 ```html
 <!-- Load the Matice translation object first -->
-<script defer src="https://unpkg.com/matice@1.0.x/dist/matice.min.js"></script>
+<script defer src="https://unpkg.com/matice@1.1.x/dist/matice.min.js"></script>
 ```
 
 * Note that you still have to generate your translations file and make 
@@ -56,7 +61,7 @@ it available to your frontend app by using `@translations` directive
 or injecting is into you html file 
 or api call or other.
 
-To generate translation file use:
+To generate the translations file use:
 
 ```bash
 php artisan matice:generate
@@ -65,7 +70,7 @@ php artisan matice:generate
 
 **TypeScript support**
 
-Matice is fully written in TypeScript. So it's compatible with TypeScript Projects.
+Matice is fully written in TypeScript so, it's compatible with TypeScript projects.
 
 
 
@@ -96,11 +101,11 @@ Let's assume we have this translations:
 return [
     'greet' => [
         'me': 'Hello!',
-        'someone': 'Hello :name!',
-        'me_more': 'Hello Ekcel Henrich!',
-        'people': 'Hello Ekcel!|Hello everyone!',
+        'someone' => 'Hello :name!',
+        'me_more' => 'Hello Ekcel Henrich!',
+        'people' =>'Hello Ekcel!|Hello everyone!',
     ],
-    balance: '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars'
+    balance => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars'
 ];
 ```
 
@@ -109,7 +114,7 @@ return [
 
 return [
     'greet' => [
-        me: 'Bonjour!'
+        me => 'Bonjour!'
     ]
 ];
 ```
@@ -188,6 +193,18 @@ same you define in your config.
 'fallback_locale' => 'en',
 ```
 
+#### Retrieve the current locale
+To retrieve the current locale, use:
+```js
+import { MaticeLocalizationConfig } from "matice"
+
+const locale = MaticeLocalizationConfig.locale // 'en'
+
+const fallbackLocale = MaticeLocalizationConfig.fallbackLocale // 'en'
+
+
+```
+
 
 ## Artisan Command
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
@@ -237,7 +254,7 @@ If you want to use the `route()` helper in a Vue component, add this to your `ap
 ```typescript
 // app.js
 
-import {__, trans, setLocale, transChoice} from "matice"
+import {__, trans, setLocale, transChoice, MaticeLocalizationConfig} from "matice"
 
 Vue.mixin({
     methods: {
@@ -247,6 +264,10 @@ Vue.mixin({
         $setLocale: (locale: string) => {
           setLocale(locale);
           app.$forceUpdate() // Refresh the vue instance after locale change.
+        },
+        // The current locale
+        $locale() {
+            return MaticeLocalizationConfig.locale
         }
     },
 })
