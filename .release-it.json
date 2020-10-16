@@ -1,0 +1,11 @@
+{
+  "npm": {
+    "publish": false
+  },
+  "hooks": {
+    "before:init": ["yarn test"]
+  },
+  "github": {
+    "release": true
+  }
+}
