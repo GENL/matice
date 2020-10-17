@@ -25,7 +25,7 @@ class TranslationsGeneratorCommand extends Command
     }
 
     /**
-     *
+     * handle function
      */
     public function handle()
     {
