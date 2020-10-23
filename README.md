@@ -60,16 +60,7 @@ or load it from a CDN:
 ```
 
 * Note that you still have to generate your translations file and make 
-it available to your frontend app by using `@translations` directive 
-or injecting is into you html file 
-or api call or other.
-
-To generate the translations file use:
-
-```bash
-php artisan matice:generate
-```
-
+it available to your frontend app by using `@translations`.
 
 **TypeScript support**
 
@@ -302,7 +293,7 @@ Then you can use the methods in your Vue components like so:
 Matice extends the Laravel `Translator` Class. Use `Translator::list()` to returns
 an array representation of all of your app translations.
 
-If you want to load only translation of a specfic locale, use the matice facade:
+If you want to load only translations of a specfic locale, use the matice facade:
 ```php
 use GENL\Matice\Facades\Matice;
 
