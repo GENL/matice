@@ -14,7 +14,9 @@ global.Matice = {
     "fr": {
       "greet": {
         "me": "Bonjour!"
-      }
+      },
+      "Key with one dot. Should be OK": "Avec un point, c'est bien.",
+      "Key with dots. Should be better...": "Avec plusieurs points, c'est mieux..."
     }
   },
   "locale": "en",
@@ -30,7 +32,7 @@ test('Retrieves simple sentence.', () => {
   expect(sentence).toEqual("Hello!")
 
   expect(() => trans('greet.unknown'))
-    .toThrow(`Translation key not found : "greet.unknown" -> Exactly "unknown" not found`)
+    .toThrow(`Translation key not found : "greet.unknown" -> Exactly "greet.unknown" not found`)
 
   sentence = __('greet.unknown')
   expect(sentence).toEqual('greet.unknown')
@@ -50,6 +52,14 @@ test('Retrieves simple sentence.', () => {
   // greet.meMore in french so fallback to english.
   sentence = __('greet.meMore')
   expect(sentence).toEqual('Hello Ekcel Henrich!')
+    
+  // Test translation key with one dot
+  sentence = trans('Key with one dot. Should be OK')
+  expect(sentence).toEqual("Avec un point, c'est bien.")
+    
+  // Test translation key with multiple dots
+  sentence = trans('Key with dots. Should be better...')
+  expect(sentence).toEqual("Avec plusieurs points, c'est mieux...")
 });
 
 
