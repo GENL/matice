@@ -213,7 +213,7 @@ class Localization {
 
         // If key not found, try with the fallback locale.
         if (locale !== MaticeLocalizationConfig.fallbackLocale) {
-          return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale, splitKey)
+          return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale)
         }
 
         // If the key not found and the silent mode is on, return the key,
