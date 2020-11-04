@@ -112,7 +112,12 @@ class MaticeServiceProvider extends ServiceProvider
 
                     if ($extension === '.json') {
 
-                        $tree[$ff] = json_decode(File::get($pathName), true);
+                        $existingTranslations = $tree[$ff] ?? [];
+
+                        $tree[$ff] = array_merge(
+                            $existingTranslations,
+                            json_decode(File::get($pathName), true)
+                        );
 
                     } else if ($extension === '.php') {
 
