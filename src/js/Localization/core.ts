@@ -182,17 +182,18 @@ class Localization {
    * @param key
    * @param silentNotFoundError
    * @param locale
+   * @param splitKey
    * @returns {string}
    * @private
    */
-  private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale): string {
+  private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale, splitKey: boolean = true): string {
     const translations: { [key: string]: any } = this.translations(locale)
 
     // At first [link] is a [Map<String, dynamic>] but at the end, it can be a [String],
     // the sentences.
     let link = translations
 
-    const parts = key.split('.')
+    const parts = splitKey ? key.split('.') : [key]
 
     for (const part of parts) {
       // Get the new json until we fall on the last key of
@@ -205,9 +206,14 @@ class Localization {
         // @ts-ignore
         link = link[part]
       } catch (e) {
+        // If key not found, try without splitting it.
+        if (splitKey) {
+          return this.findSentence(key, silentNotFoundError, locale, false)
+        }
+
         // If key not found, try with the fallback locale.
         if (locale !== MaticeLocalizationConfig.fallbackLocale) {
-          return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale)
+          return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale, splitKey)
         }
 
         // If the key not found and the silent mode is on, return the key,
