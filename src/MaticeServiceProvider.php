@@ -106,9 +106,9 @@ class MaticeServiceProvider extends ServiceProvider
 
                     $tree[$ff] = MaticeServiceProvider::makeFolderFilesTree($dir . '/' . $ff);
 
-                } else {
+                }
 
-                    $pathName = $dir . '/' . $ff . $extension;
+                if (is_file($pathName = $dir . '/' . $ff . $extension)) {
 
                     if ($extension === '.json') {
 
