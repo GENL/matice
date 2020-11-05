@@ -182,29 +182,31 @@ class Localization {
    * @param key
    * @param silentNotFoundError
    * @param locale
+   * @param splitKey
    * @returns {string}
    * @private
    */
-  private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale): string {
+  private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale, splitKey: boolean = false): string {
     const translations: { [key: string]: any } = this.translations(locale)
 
     // At first [link] is a [Map<String, dynamic>] but at the end, it can be a [String],
     // the sentences.
     let link = translations
 
-    const parts = key.split('.')
+    const parts = splitKey ? key.split('.') : [key]
 
     for (const part of parts) {
       // Get the new json until we fall on the last key of
       // the array which should point to a String.
-      try {
-        // Make sure the _key exist.
-        // If not this throws an error that is handled by the "catch" block
-        // @ts-ignore
-        assert(link[part])
-        // @ts-ignore
+      if (part in link) {
+        // Make sure the key exist.
         link = link[part]
-      } catch (e) {
+      } else {
+        // If key not found, try to split it using dot.
+        if (!splitKey) {
+          return this.findSentence(key, silentNotFoundError, locale, true)
+        }
+
         // If key not found, try with the fallback locale.
         if (locale !== MaticeLocalizationConfig.fallbackLocale) {
           return this.findSentence(key, silentNotFoundError, MaticeLocalizationConfig.fallbackLocale)
