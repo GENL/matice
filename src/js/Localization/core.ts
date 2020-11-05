@@ -198,7 +198,7 @@ class Localization {
     for (const part of parts) {
       // Get the new json until we fall on the last key of
       // the array which should point to a String.
-      if (part in link) {
+      if (typeof link === 'object' && part in link) {
         // Make sure the key exist.
         link = link[part]
       } else {
