@@ -33,8 +33,6 @@ class ManageTranslationTest extends TestCase
      */
     public function loadTranslations()
     {
-        // $translations = app()->make('matice')->translations('./assets/lang');
-        // dd(__DIR__ . ('/test/assets/lang'));
         $translations = Matice::translations($this->langDir);
 
         $this->assertIsArray($translations);

@@ -65,7 +65,7 @@ class Localization {
 
     if (translations === undefined) {
       console.warn('Matice Translation not found. For Matice-js to work, make sure to add @translations' +
-        ' blade directive in your view. Usually insert he directive in app.layout.');
+        ' blade directive in your view. Usually insert the directive in app.layout.');
       translations = [];
     } else {
       translations = translations[locale];
@@ -129,12 +129,12 @@ class Localization {
         matched = [parts[i]]
       }
 
-      // Remove unwanted characters: '[', ']', '{', '}'
+      // Remove unwanted characters: "[",  "]",  "{",  "}"
       const replaced = matched[0].replace(/[\[{\]}]/, '')
       // Split the matched to have an array of string number
       const rangeNumbers = replaced.split(',').map((m: string) => {
         const parsed = Number.parseInt(m.trim())
-        // If parsed is a start(*) which mean infinity, just replace by count + 1
+        // If parsed is a star(*) which mean infinity, just replace by count + 1
         return Number.isInteger(parsed) ? parsed : count + 1
       })
 
