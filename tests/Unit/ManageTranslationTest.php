@@ -51,7 +51,7 @@ class ManageTranslationTest extends TestCase
     {
         $jsOutput = Matice::generate();
 
-        $this->assertStringContainsString('<script type="text/javascript">', $jsOutput);
+        $this->assertStringContainsString('<script id="matice-translations">', $jsOutput);
 
 
         // ================== Test the blade directive ===================
