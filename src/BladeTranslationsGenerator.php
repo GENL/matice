@@ -33,11 +33,9 @@ class BladeTranslationsGenerator
             return <<<EOT
 <!-- Matice Laravel Translations generated -->
 <!-- Used cached translations at: $path -->
-<div id="matice-translations">
-  <script type="text/javascript">
-    $generated
-  </script>
-</div>
+<script id="matice-translations">
+  $generated
+</script>
 EOT;
 
         }
@@ -58,11 +56,9 @@ EOT;
             /** @noinspection BadExpressionStatementJS */
             return <<<EOT
 <!-- Matice Laravel Translations generated -->
-<div id="matice-translations">
-  <script type="text/javascript">
-    $object
-  </script>
-</div>
+<script id="matice-translations">
+  $object
+</script>
 EOT;
         } else {
             return $object;
