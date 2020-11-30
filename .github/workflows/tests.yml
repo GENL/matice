@@ -15,8 +15,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.3, 7.4]
+        php: [7.2, 7.3, 7.4, 8.0]
         laravel: [6.*, 7.*, 8.*]
+        exclude:
+          # Laravel >= 8.0 doesn't support PHP 7.2
+          - php: 7.2
+            laravel: 8.*
         include:
           - laravel: 6.*
             testbench: 4.*
@@ -62,5 +66,3 @@ jobs:
 
       - name: Run Jest tests
         run: npm test
-
-
