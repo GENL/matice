@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice)
 [![Latest Version on NPM](https://img.shields.io/npm/v/matice.svg?style=flat)](https://npmjs.com/package/matice)
 [![GitHub Actions Status](https://img.shields.io/github/workflow/status/genl/matice/Tests?label=tests&style=flat)](https://github.com/genl/matice/actions?query=workflow:Tests+branch:master)
-[![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://www.npmjs.com/package/matice)
+[![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice/stats)
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
 Matice creates a Blade directive that you can include in your views. 
@@ -99,7 +99,7 @@ return [
         'me_more' => 'Hello Ekcel Henrich!',
         'people' =>'Hello Ekcel!|Hello everyone!',
     ],
-    balance => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars'
+    'balance' => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars'
 ];
 ```
 
