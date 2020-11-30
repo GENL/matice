@@ -21,7 +21,6 @@ jobs:
           # Laravel >= 8.0 doesn't support PHP 7.2
           - php: 7.2
             laravel: 8.*
-            testbench: 6.*
         include:
           - laravel: 6.*
             testbench: 4.*
