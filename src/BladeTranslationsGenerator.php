@@ -41,14 +41,14 @@ EOT;
         }
 
         $translations = json_encode($this->translations($locale));
-        $locale = app()->getLocale();
+        $appLocale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');
 
         $object = <<<EOT
 const Matice = {
-  locale: "$locale",
+  locale: "$appLocale",
   fallbackLocale: "$fallbackLocale",
-  translations: $translations 
+  translations: $translations
 }
 EOT;
 
@@ -76,6 +76,7 @@ EOT;
         $translations = Translator::list();
 
         if (isset($translations[$locale])) {
+            // Loads translations of the locale
             $translations = $translations[$locale];
         }
 

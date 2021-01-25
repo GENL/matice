@@ -25,9 +25,9 @@ class MaticeServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
-             $this->publishes([
-             __DIR__.'/../config/config.php' => config_path('matice.php'),
-             ], 'config');
+            $this->publishes([
+                __DIR__.'/../config/config.php' => config_path('matice.php'),
+            ], 'config');
 
             // Publishing the views.
             /*$this->publishes([
