@@ -7,7 +7,7 @@
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
 Matice creates a Blade directive that you can include in your views. 
-It will export a JavaScript object of your application's translations,
+It will export a JavaScript object of your Laravel application's translations,
 keyed by their names (aliases, lang, filenames, folders name), 
 as well as globals trans(), __() and transChoice() helper
 functions which you can use to access your translations in your JavaScript.
@@ -37,12 +37,12 @@ composer require genl/matice
 
 1. ##### Include our Blade directive (`@translations`) somewhere in your template before your main application JavaScript is loaded—likely in the header somewhere.
 1. ##### Publish the vendor if you want to customize config: 
-```php
+```bash
 php artisan vendor:publish --provider=Genl\Matice\MaticeServiceProvider
 ```
 
 Matice is available as an NPM `matice` package
-which exposes the `trans ()` function for use in frontend applications
+which exposes the `trans()` function for use in frontend applications
 that do not use Blade.
 You can install the NPM package with:
 ```bash
@@ -56,7 +56,7 @@ npm install matice
 or load it from a CDN:
 ```html
 <!-- Load the Matice translation object first -->
-<script defer src="https://unpkg.com/matice@1.1.x/dist/matice.min.js"></script>
+<script src="https://unpkg.com/matice@1.1.x/dist/matice.min.js" defer></script>
 ```
 
 * Note that the JavaScript package only contains the translations logic. You have to generate your translations file and make 
@@ -87,7 +87,7 @@ import the `trans()` function like follow:
 import { trans } from "matice";
 ```
 
-Let's assume we have this translations:
+Let's assume we have this translations file:
 
 ```php
 // resources/lang/en/custom.php
@@ -99,7 +99,7 @@ return [
         'me_more' => 'Hello Ekcel Henrich!',
         'people' =>'Hello Ekcel!|Hello everyone!',
     ],
-    'balance' => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars'
+    'balance' => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name, :count Million Dollars'
 ];
 ```
 
@@ -108,7 +108,7 @@ return [
 
 return [
     'greet' => [
-        me => 'Bonjour!'
+        'me' => 'Bonjour!'
     ]
 ];
 ```
@@ -147,7 +147,7 @@ sentence = trans('greet.people', {args: {count: 0}, pluralize: true}) // Hello E
 sentence = trans('greet.people', {args: {count: 2}, pluralize: true}) // Hello everyone!
 
 // Advanced pluralization with range. Works the same way.
-// [balance => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars']
+// [balance => '{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name, :count Million Dollars']
 sentence = trans('balance', {args: {count: 0}, pluralize: true}) // You're broke
 sentence = trans('balance', {args: {count: 3000}, pluralize: true}) // a middle man
 ```
@@ -159,7 +159,7 @@ Matice provides a helper function for pluralization
 ```javascript
 import { transChoice } from "matice"
 
-let sentence = transChoice('balance', 17433085, {name: 'Ekcel'}) // You are awesome Ekcel; 17433085 Million Dollars
+let sentence = transChoice('balance', 17433085, {name: 'Ekcel'}) // You are awesome Ekcel, 17433085 Million Dollars
 ```
 
 
@@ -176,11 +176,11 @@ sentence = __('greet.unknown') // greet.unknown
 
 #### Default values
 
-Matice uses your current app locale `app()->getLocale()` a the default locale when generating the translation object with the blade directive `@translations`.
-When generating with command line, it use the one in your `config.app`
+Matice uses your current app locale `app()->getLocale()` as the default locale when generating the translation object with the blade directive `@translations`.
+When generating with command line, it uses the one in your `config.app.locale`
 
 When Matice does not find a key, it falls back to the default locale and search again. The fallback is the
-same you define in your `config.app`.
+same you define in your `config.app.fallback_locale`.
 
 ```php
 // config/app.php
@@ -208,7 +208,7 @@ import { setLocale, getLocale, locales } from "matice"
 // Update the locale
 setLocale('fr') //
 
-const locale = getLocale() // 'en'
+const locale = getLocale() // 'fr'
 
 const locales = locales() // ['en', 'fr']
 ``` 
@@ -255,10 +255,10 @@ export { Matice };
 
 At this point you can use in javascript this translations file like usual, paste in your html as well.
 
-This is useful if your laravel and js app is separated like a SPA or PWA. So you can
-link the generated translations file and link the file to your JS App. But if it not the case
+This is useful if your laravel and js app is separated like an SPA or PWA. So you can
+link the generated translations file with your JS App. If it's not the case
 you might never have to generate the translations manually because `@translations` directive already does
-it for you.
+it for you when the app environment is 'production'.
 
 ## Using with Vue Components
 
@@ -274,7 +274,7 @@ Vue.mixin({
         $trans: trans,
         $__: __,
         $transChoice: transChoice,
-        $setLocale: (locale: string) => {
+        $setLocale(locale: string) {
           setLocale(locale);
           this.$forceUpdate() // Refresh the vue instance after locale change.
         },
@@ -301,15 +301,15 @@ Then you can use the methods in your Vue components like so:
 Matice extends the Laravel `Translator` Class. Use `Translator::list()` to returns
 an array representation of all of your app translations.
 
-If you want to load only translations of a specfic locale, use the matice facade:
+If you want to load only translations of a specific locale, use the matice facade:
 ```php
 use GENL\Matice\Facades\Matice;
 
-// Or load translations for a specific locale.
-$translations = Matice::translations($locale)
+// Loads all the translations
+$translations = Matice::translations();
 
-// Or all the translations
-$translations = Matice::translations()
+// Or loads translations for a specific locale.
+$translations = Matice::translations($locale);
 ```
 
 
@@ -318,11 +318,11 @@ $translations = Matice::translations()
 When using the `@translations` Blade directive, Matice detects the current environment and minify the output if `APP_ENV` is `production`. 
 
 In development, `@translations` loops into the lang directory to generate the matice object each time the page reloads, and doesn't generate`matice_translations.js` file. 
-In production, `@translations` generate the `matice_translations.js` file for you so the when your app is open for the first time.
-Then the generated file is used every time the page reloads so the Matice object is not generated every time. It increases the performance in production.
+In production, `@translations` generate the `matice_translations.js` file for you when your app is open for the first time then the generated file is used every time the page reloads.
+The Matice object is not generated every time, so it has no effect on performances in production.
 This behavior can be disabled in the `config/matice.php` file, set `use_generated_translations_file_in_prod` to false.
 
-######**Note: Matice supports with json translation files as well as with php files.**, 
+######**Note: Matice supports json translation files as well as php files.**, 
 
 
 ### Testing
