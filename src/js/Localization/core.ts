@@ -208,7 +208,7 @@ class Localization {
         }
 
         // If the key not found and the silent mode is on, return the key,
-        if (silentNotFoundError) return key;
+        if (silentNotFoundError) return key
 
         // If key not found and the silent mode is off, throw error,
         throw `Translation key not found : "${key}" -> Exactly "${part}" not found`
