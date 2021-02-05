@@ -62,7 +62,6 @@ test('Retrieves simple sentence.', () => {
   expect(sentence).toEqual("Avec plusieurs points, c'est mieux...")
 });
 
-
 test('Pluralize the sentence well', () => {
   let sentence: string;
   sentence = trans('greet.people', {args: {count: 0}, pluralize: true})
@@ -83,3 +82,11 @@ test('Pluralize the sentence well', () => {
   sentence = transChoice('balance', 8578442, {name: 'Ekcel'})
   expect(sentence).toEqual(" You are awesome Ekcel; 8578442 Million Dollars")
 });
+
+test('Test that the locale can be forced', () => {
+  expect(trans('greet.me', { locale: 'fr' })).toEqual("Bonjour!")
+
+  expect(__('greet.me', { locale: 'fr' })).toEqual("Bonjour!")
+
+  expect(transChoice('greet.me', 1, undefined, 'fr')).toEqual("Bonjour!")
+})

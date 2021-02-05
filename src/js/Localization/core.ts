@@ -1,6 +1,4 @@
-import MaticeLocalizationConfig from "./MaticeLocalizationConfig";
-
-// const assert = require("assert");
+import MaticeLocalizationConfig from "./MaticeLocalizationConfig"
 
 function assert(value: boolean, message: string) {
   if (! value) throw message
@@ -8,17 +6,18 @@ function assert(value: boolean, message: string) {
 
 export interface TranslationOptions {
   args?: { [key: string]: any },
-  pluralize?: boolean
+  pluralize?: boolean,
+  locale?: string,
 }
 
 class Localization {
-  private static _instance: Localization;
+  private static _instance: Localization
 
   public static get instance(): Localization {
     if (Localization._instance === undefined) {
       Localization._instance = new Localization()
     }
-    return Localization._instance;
+    return Localization._instance
   }
 
   private constructor() {
@@ -65,10 +64,10 @@ class Localization {
 
     if (translations === undefined) {
       console.warn('Matice Translation not found. For Matice-js to work, make sure to add @translations' +
-        ' blade directive in your view. Usually insert the directive in app.layout.');
-      translations = [];
+        ' blade directive in your view. Usually insert the directive in app.layout.')
+      translations = []
     } else {
-      translations = translations[locale];
+      translations = translations[locale]
 
       if (translations === undefined) {
         throw `Locale [${locale}] does not exist.`
@@ -82,9 +81,9 @@ class Localization {
    * Translate the given key.
    */
   public trans(key: string, silentNotFoundError: boolean, options: TranslationOptions = {args: {}, pluralize: false}) {
-    const args = options.args || {};
+    const args = options.args || {}
 
-    let sentence = this.findSentence(key, silentNotFoundError)
+    let sentence = this.findSentence(key, silentNotFoundError, options.locale)
 
     if (options.pluralize) {
       assert(typeof args.count === 'number',
@@ -95,7 +94,7 @@ class Localization {
     // Replace the variables in sentence.
     Object.keys(args).forEach((key) => {
       sentence = sentence.replace(new RegExp(':' + key, 'g'), args[key])
-    });
+    })
 
     return sentence
   }
@@ -106,7 +105,7 @@ class Localization {
    * Manage sentence pluralization the sentence. Return the good sentence depending of the `count` argument.
    */
   private pluralize(sentence: string, count: number): string {
-    let parts = sentence.split('|');
+    let parts = sentence.split('|')
 
     // Make sure the pieces are always three in length for ease of calculation.
     // We fill the empty indexes with a direct preceding index.
@@ -116,7 +115,7 @@ class Localization {
     else parts = [parts[0], parts[0], parts[0]]
 
     // Manage multiple number range.
-    let ranges: { min: number, max: number, part: string }[] = [];
+    let ranges: { min: number, max: number, part: string }[] = []
     const pattern = /^(\[(\s*\d+\s*)+,(\s*(\d+|\*)\s*)])|({\s*\d+\s*})/
 
     for (let i = 0; i < parts.length; i++) {
@@ -148,7 +147,7 @@ class Localization {
       )
     }
 
-    let foundInRange = false;
+    let foundInRange = false
     // Compare the part with the range to choose the pluralization.
     // -------  ------
     // Return the first part if count is zero or negative
@@ -161,7 +160,7 @@ class Localization {
           // count is in the range.
           sentence = range.part
           foundInRange = true
-          break;
+          break
         }
       }
       if (! foundInRange) {
@@ -170,11 +169,7 @@ class Localization {
       }
     }
 
-    // if (count > 1) sentence = parts[2]
-    // else if (count === 1) sentence = parts[1]
-    // else sentence = parts[0]
-
-    return sentence;
+    return sentence
   }
 
   /**
@@ -220,11 +215,7 @@ class Localization {
       }
     }
 
-    key.split('.').forEach((_key) => {
-
-    });
-
-    return link.toString();
+    return link.toString()
   }
 }
 
@@ -245,7 +236,7 @@ class Localization {
  * @param options
  */
 export function trans(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
-  return Localization.instance.trans(key, false, options);
+  return Localization.instance.trans(key, false, options)
 }
 
 /**
@@ -255,7 +246,7 @@ export function trans(key: string, options: TranslationOptions = {args: {}, plur
  * @param options
  */
 export function __(key: string, options: TranslationOptions = {args: {}, pluralize: false}) {
-  return Localization.instance.trans(key, true, options);
+  return Localization.instance.trans(key, true, options)
 }
 
 /**
@@ -263,9 +254,10 @@ export function __(key: string, options: TranslationOptions = {args: {}, plurali
  * @param key
  * @param count
  * @param args
+ * @param locale
  */
-export function transChoice(key: string, count: number, args: {}) {
-  return trans(key, {args: {...args, count}, pluralize: true});
+export function transChoice(key: string, count: number, args: {} = {}, locale: string = MaticeLocalizationConfig.locale) {
+  return trans(key, { args: {...args, count}, pluralize: true, locale })
 }
 
 /**
