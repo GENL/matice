@@ -215,7 +215,7 @@ const locales = locales() // ['en', 'fr']
 ```
 
 #### Force locale
-With the version 1.1.4, it is possible to force the locale for a specific translation with changing the global local.
+With the version 1.1.4, it is possible to force the locale for a specific translation WITHOUT changing the global local.
 ```js
 setLocale('en') // Set the current locale to English.
 
