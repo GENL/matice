@@ -23,6 +23,7 @@ functions which you can use to access your translations in your JavaScript.
     - [underscore function](#underscore-function)
     - [Default Values](#default-values)
     - [Retrieve the current locale](#retrieve-the-current-locale)
+    - [Force locale](#force-locale)
 - [Artisan Command](#artisan-command)
 - [Using with Vue Components](#using-with-vue-components)
 - [Dive Deeper](#dive-deeper)
@@ -211,7 +212,23 @@ setLocale('fr') //
 const locale = getLocale() // 'fr'
 
 const locales = locales() // ['en', 'fr']
-``` 
+```
+
+#### Force locale
+With the version 1.1.4, it is possible to force the locale for a specific translation with changing the global local.
+```js
+setLocale('en') // Set the current locale to English.
+
+trans('greet.me') // "Hello!"
+trans('greet.me', { locale: 'fr' }) // "Bonjour!"
+trans('greet.me', { args: {}, locale: 'fr' }) // "Bonjour!"
+
+__('greet.me', { locale: 'fr' }) // "Bonjour!"
+
+transChoice('greet.me', 1, undefined, 'fr') // "Bonjour!"
+transChoice('greet.me', 1, {}, 'fr') // "Bonjour!"
+```
+
 
 ## Artisan Command
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
@@ -298,7 +315,7 @@ Then you can use the methods in your Vue components like so:
 
 ## Dive Deeper
 
-Matice extends the Laravel `Translator` Class. Use `Translator::list()` to returns
+Matice extends the Laravel `Translator` class. Use `Translator::list()` to return
 an array representation of all of your app translations.
 
 If you want to load only translations of a specific locale, use the matice facade:
