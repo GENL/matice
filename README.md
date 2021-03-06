@@ -24,7 +24,7 @@ functions which you can use to access your translations in your JavaScript.
     - [Default Values](#default-values)
     - [Retrieve the current locale](#retrieve-the-current-locale)
     - [Force locale](#force-locale)
-- [Artisan Command](#artisan-command)
+- [Use with SPA](#use-with-spa)
 - [Using with Vue Components](#using-with-vue-components)
 - [Dive Deeper](#dive-deeper)
 
@@ -230,8 +230,8 @@ transChoice('greet.me', 1, {}, 'fr') // "Bonjour!"
 ```
 
 
-## Artisan Command
-Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
+## Use with SPA
+Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used (or not) as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
 
 You can run `php artisan matice:generate` in your project to generate a static translations file in `resources/assets/js/matice_translations.js`.
 You can customize the generation path in the `config/matice.php` file.
@@ -272,14 +272,38 @@ export { Matice };
 
 At this point you can use in javascript this translations file like usual, paste in your html as well.
 
-This is useful if your laravel and js app is separated like an SPA or PWA. So you can
-link the generated translations file with your JS App. If it's not the case
+This is useful if your laravel and js app is separated like with SPA or PWA. So you can
+link the generated translations file with your JS App. If you're not in the case of SPA, WPA...
 you might never have to generate the translations manually because `@translations` directive already does
-it for you when the app environment is 'production'.
+it for you when the app environment is 'production' to improve performance.
+
+```html
+<!-- Manually include the generated translations in your HTML file. -->
+
+<html>
+<head>
+    <title></title>
+    
+    <!-- The matice package -->
+    <script src="https://unpkg.com/matice@1.1.x/dist/matice.min.js" defer></script>
+
+    <!-- "link to the generated translations file" -->
+    <script src="https://your-awesomeapp-server.co/matice_translations.js"></script>
+</head>
+
+<body>
+    😃
+</body>
+</html>
+```
 
 ## Using with Vue Components
+Basically, Matice can be integrated to any Javascript projects. Event with some big framework like Vue.js
+React.js or Angular. Some frameworks like Vue re-renders the UI dynamically. In this section we show you
+how to bind Matice with Vue 2. Based on this example we assume you can take inspiration to do the same with the framework you use for your project.
+For example, with React, you should re-render the whole app after `setLocale()` is called for the changes to be visible.
 
-If you want to use the `route()` helper in a Vue component, add this to your `app.js` file:
+Add this to your `app.js` file:
 
 ```javascript
 // app.js
@@ -292,8 +316,8 @@ Vue.mixin({
         $__: __,
         $transChoice: transChoice,
         $setLocale(locale: string) {
-          setLocale(locale);
-          this.$forceUpdate() // Refresh the vue instance after locale change.
+            setLocale(locale);
+            this.$forceUpdate() // Refresh the vue instance(The whole app in case of SPA) after the locale changes.
         },
         // The current locale
         $locale() {
