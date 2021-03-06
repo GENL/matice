@@ -297,6 +297,9 @@ it for you when the app environment is 'production' to improve performance.
 </html>
 ```
 
+Whenever your translation messages change, run `php artisan matice:generate` again.
+Remember to disable browser cache, it may have cached the old translations file.
+
 ## Using with Vue Components
 Basically, Matice can be integrated to any Javascript projects. Event with some big framework like Vue.js
 React.js or Angular. Some frameworks like Vue re-renders the UI dynamically. In this section we show you
