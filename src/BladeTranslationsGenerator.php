@@ -4,9 +4,9 @@
 namespace Genl\Matice;
 
 
+use Genl\Matice\Exceptions\LocaleTranslationsFileOrDirNotFoundException;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
-use Illuminate\Translation\Translator;
 
 class BladeTranslationsGenerator
 {
@@ -30,54 +30,71 @@ class BladeTranslationsGenerator
 
             $generated = File::get($path);
 
-            return <<<EOT
-<!-- Matice Laravel Translations generated -->
-<!-- Used cached translations at: $path -->
-<script id="matice-translations">
-  $generated
-</script>
-EOT;
-
+            return $this->makeMaticeHtml($generated, 'Matice Laravel Translations generated', "Used cached translations at: $path");
         }
 
+        if ($wrapInHtml) {
+            return $this->makeMaticeHtml($this->makeMaticeObject($locale), 'Matice Laravel Translations generated');
+        } else {
+            return $this->makeMaticeObject($locale);
+        }
+    }
+
+    private function makeMaticeObject(?string $locale): string
+    {
         $translations = json_encode($this->translations($locale));
-        $appLocale = app()->getLocale();
+        $appLocale = $locale ?? app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');
 
-        $object = <<<EOT
+        return <<<EOT
 const Matice = {
-  locale: "$appLocale",
-  fallbackLocale: "$fallbackLocale",
+  locale: '$appLocale',
+  fallbackLocale: '$fallbackLocale',
   translations: $translations
 }
 EOT;
+    }
 
-        if ($wrapInHtml) {
-            /** @noinspection BadExpressionStatementJS */
-            return <<<EOT
+    /**
+     * @param string $maticeObject
+     * @param string ...$comments
+     * @return string
+     */
+    private function makeMaticeHtml(string $maticeObject, ...$comments)
+    {
+        $c = '';
+
+        foreach ($comments as $comment) {
+            $c .= "<!-- $comment -->\n";
+        }
+
+        return <<<EOT
 <!-- Matice Laravel Translations generated -->
 <script id="matice-translations">
-  $object
+    $c; $maticeObject;
 </script>
 EOT;
-        } else {
-            return $object;
-        }
     }
+
 
     /**
      * Load all the translations array.
      *
      * @param string|null $locale
      * @return array
+     * @throws LocaleTranslationsFileOrDirNotFoundException
      */
     public function translations(?string $locale = null): array
     {
         $translations = MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));
 
-        if (isset($translations[$locale])) {
-            // Loads translations of the locale
-            $translations = $translations[$locale];
+        if (! is_null($locale)) {
+            if (isset($translations[$locale])) {
+                // Loads translations of the locale
+                $translations = [$locale => $translations[$locale]];
+            } else {
+                throw new LocaleTranslationsFileOrDirNotFoundException($locale);
+            }
         }
 
         return $translations;

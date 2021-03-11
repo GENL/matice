@@ -33,7 +33,7 @@ class ManageTranslationTest extends TestCase
      */
     public function loadTranslations()
     {
-        $translations = Matice::translations($this->langDir);
+        $translations = Matice::translations();
 
         $this->assertIsArray($translations);
 
