@@ -87,6 +87,7 @@ EOT;
     public function translations(?string $locale = null): array
     {
         $translations = MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));
+        Helpers::applyTranslationRestrictions($translations);
 
         if (! is_null($locale)) {
             if (isset($translations[$locale])) {

@@ -32,4 +32,34 @@ return [
     */
     'generate_translations_path' => resource_path('assets/js/matice_translations.js'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Restrictions
+    |--------------------------------------------------------------------------
+    |
+    | Specify which translation namespaces must(only) be exported.
+    | It could be the paths to the folders or files you want to exported to the client.
+
+    | The base directory is the "lang_directory"
+    |
+    */
+    'only' => [
+        //
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Restrictions
+    |--------------------------------------------------------------------------
+    |
+    | Specify which translation namespaces must NOT be exported.
+    | It could be the paths to the folders or files you want to exported to the client.
+
+    | The base directory is the "lang_directory"
+    |
+    */
+    'except' => [
+        //
+    ],
+
 ];
