@@ -86,11 +86,11 @@ class Helpers
 
         foreach ($exportables as $exportableNamespace) {
             // Force "/" as separator
-            $exportableNamespace = Str::of(trim($exportableNamespace, '/\\'))->replace('\\', '/');
+            $exportableNamespace = str_replace('\\', '/', trim($exportableNamespace, '/\\'));
             // Remove the last dot that might exit when the namespace is a file.
-            $exportableNamespace = $exportableNamespace->beforeLast('.');
+            $exportableNamespace = Str::beforeLast($exportableNamespace,'.');
             // Replace the "/" by "."
-            $exportableNamespace = $exportableNamespace->replace('/', '.');
+            $exportableNamespace = str_replace('/', '.', $exportableNamespace);
 
             // Set only the translations for the exportable namespaces
             $value = Arr::get($copy, (string)$exportableNamespace);
@@ -104,11 +104,11 @@ class Helpers
 
         foreach ($hidden as $hiddenNamespace) {
             // Force "/" as separator
-            $hiddenNamespace = Str::of(trim($hiddenNamespace, '/\\'))->replace('\\', '/');
+            $hiddenNamespace = str_replace('\\', '/', trim($hiddenNamespace, '/\\'));
             // Remove the last dot that might exit when the namespace is a file.
-            $hiddenNamespace = $hiddenNamespace->beforeLast('.');
+            $hiddenNamespace = Str::beforeLast($hiddenNamespace,'.');
             // Replace the "/" by "."
-            $hiddenNamespace = $hiddenNamespace->replace('/', '.');
+            $hiddenNamespace = str_replace('/', '.', $hiddenNamespace);
 
             // remove the translations in the array
             Arr::forget($translations, $hiddenNamespace);
