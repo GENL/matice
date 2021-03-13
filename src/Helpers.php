@@ -63,8 +63,10 @@ class Helpers
     }
 
     /**
-     * This method removes the excepted namespaces from the translations.
-     * Then it add allows only the exportable translations if defined.
+     * This method removes the excepted namespaces from the translations
+     * and add allows only the exportable translations if defined.
+     *
+     * When the same namespace is included and excepted at the same time, it considered excepted.
      *
      * @param array $translations
      */

@@ -24,6 +24,8 @@ functions which you can use to access your translations in your JavaScript.
     - [Default Values](#default-values)
     - [Retrieve the current locale](#retrieve-the-current-locale)
     - [Force locale](#force-locale)
+- [Filtering translations](#filtering-translations)
+    - [Filtering namespaces](#filtering-namespaces)
 - [Use with SPA](#use-with-spa)
 - [Using with Vue Components](#using-with-vue-components)
 - [Dive Deeper](#dive-deeper)
@@ -230,6 +232,35 @@ transChoice('greet.me', 1, {}, 'fr') // "Bonjour!"
 ```
 
 
+## Filtering translations
+Matice supports filtering the translations it makes available to your JavaScript, which is great to control the size of your
+data your translations become too large with thousands of lines.
+
+#### Filtering namespaces
+To set up namespace translations filtering, update in your config file either an `only` or `except` setting as an array of translations folders or files.
+`Note: Setting the same namespace both 'only' and 'except' will result to 'except'. But in the other cases, 'only' takes precedence over 'except'`
+
+```php
+    // config.matice.php
+    
+    return [
+        // Export only 
+        'only' => [
+            'fr/', // Take all the 'fr' directory with his children
+            'es', // Take all the 'es' directory with his children
+            'en/auth', // With or without the file extension
+            'en/pagination.php',
+            'en/validations',
+        ],
+        
+        // Or... export everything except
+        'except' => [
+            'en/passwords',
+            'en\\validations',
+        ],
+    ]; 
+```
+
 ## Use with SPA
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used (or not) as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
 
@@ -248,7 +279,7 @@ An example of `matice_translations.js`, where auth translations exist in `resour
 return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-]
+];
 ```
 
 ```js
