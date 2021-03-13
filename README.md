@@ -241,7 +241,7 @@ To set up namespace translations filtering, update in your config file either an
 `Note: Setting the same namespace both 'only' and 'except' will result to 'except'. But in the other cases, 'only' takes precedence over 'except'`
 
 ```php
-    // config.matice.php
+    // config/matice.php
     
     return [
         // Export only 
@@ -260,6 +260,8 @@ To set up namespace translations filtering, update in your config file either an
         ],
     ]; 
 ```
+
+The base directory is the lang_directory defined in the config file: `config('matice.lang_directory')`.
 
 ## Use with SPA
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used (or not) as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
