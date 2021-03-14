@@ -6,6 +6,9 @@
 [![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice/stats)
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
+![Logo](https://banners.beyondco.de/Matice.png?theme=light&packageManager=composer+require&packageName=genl%2Fmatice&pattern=architect&style=style_1&description=Use+your+Laravel+translations+in+JavaScript&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+
+
 Matice creates a Blade directive that you can include in your views. 
 It will export a JavaScript object of your Laravel application's translations,
 keyed by their names (aliases, lang, filenames, folders name), 
