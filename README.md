@@ -6,7 +6,7 @@
 [![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice/stats)
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
-![Logo](https://banners.beyondco.de/Matice.png?theme=light&packageManager=composer+require&packageName=genl%2Fmatice&pattern=architect&style=style_1&description=Use+your+Laravel+translations+in+JavaScript&md=1&showWatermark=0&fontSize=25px&images=cube)
+![Logo](https://banners.beyondco.de/Matice.png?theme=dark&packageManager=composer+require&packageName=genl%2Fmatice&pattern=architect&style=style_1&description=Use+your+Laravel+translations+in+JavaScript&md=1&showWatermark=0&fontSize=100px&images=cube)
 
 
 Matice creates a Blade directive that you can include in your views. 
