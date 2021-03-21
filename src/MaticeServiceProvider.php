@@ -43,12 +43,12 @@ class MaticeServiceProvider extends ServiceProvider
             /*$this->publishes([
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/matice'),
             ], 'lang');*/
-
-            // Registering package commands.
-            $this->commands([
-                TranslationsGeneratorCommand::class,
-            ]);
         }
+
+        // Registering package commands.
+        $this->commands([
+            TranslationsGeneratorCommand::class,
+        ]);
 
         Translator::macro('list', function () {
             return MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));

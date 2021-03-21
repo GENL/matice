@@ -79,7 +79,7 @@ class Helpers
 
         // When the user ask to export only a certain namespaces, we empty the $translation to fill them later
         // with the only ones required.
-        if (!empty($exportables)) {
+        if (! empty($exportables)) {
             $copy = $translations;
             $translations = [];
         }
