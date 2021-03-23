@@ -30,7 +30,7 @@ class BladeTranslationsGenerator
 
             $generated = File::get($path);
 
-            return $this->makeMaticeHtml($generated, 'Matice Laravel Translations generated', "Used cached translations at: $path");
+            return $this->makeMaticeHtml($generated, 'Matice Laravel Translations generated', "Use cached translations");
         }
 
         if ($wrapInHtml) {
