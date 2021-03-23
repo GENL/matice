@@ -44,7 +44,7 @@ composer require genl/matice
 1. ##### Include our Blade directive (`@translations`) somewhere in your template before your main application JavaScript is loaded—likely in the header somewhere.
 1. ##### Publish the vendor if you want to customize config: 
 ```bash
-php artisan vendor:publish --provider=Genl\Matice\MaticeServiceProvider
+php artisan vendor:publish --provider="Genl\Matice\MaticeServiceProvider"
 ```
 
 Matice is available as an NPM `matice` package
