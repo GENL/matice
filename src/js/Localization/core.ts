@@ -111,7 +111,7 @@ class Localization {
     // We fill the empty indexes with a direct preceding index.
     // We fill the empty parts by the last part.
     if (parts.length >= 3) parts = [parts[0], parts[1], parts[2]]
-    else if (parts.length === 2) parts = [parts[0], parts[1], parts[1]]
+    else if (parts.length === 2) parts = [parts[0], parts[0], parts[1]]
     else parts = [parts[0], parts[0], parts[0]]
 
     // Manage multiple number range.
