@@ -9,7 +9,8 @@ global.Matice = {
         "meMore": "Hello Ekcel Henrich!",
         "people": "Hello Ekcel!|Hello everyone!",
       },
-      "balance": "{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars"
+      "balance": "{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars",
+      "pluralTwoSegments": "One user|Many users",
     },
     "fr": {
       "greet": {
@@ -81,6 +82,12 @@ test('Pluralize the sentence well', () => {
 
   sentence = transChoice('balance', 8578442, {name: 'Ekcel'})
   expect(sentence).toEqual(" You are awesome Ekcel; 8578442 Million Dollars")
+
+  sentence = transChoice('pluralTwoSegments', 1)
+  expect(sentence).toEqual("One user")
+
+  sentence = transChoice('pluralTwoSegments', 2)
+  expect(sentence).toEqual("Many users")
 });
 
 test('Test that the locale can be forced', () => {
