@@ -3,9 +3,9 @@
     "publish": true
   },
   "hooks": {
-    "before:init": ["yarn test"]
+    "before:init": ["yarn test", "yarn build"]
   },
   "github": {
-    "release": false
+    "release": true
   }
 }

@@ -13,8 +13,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc && webpack",
-    "prepare": "npm run build",
-    "release": "release-it"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
