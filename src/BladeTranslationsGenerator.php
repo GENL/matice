@@ -42,6 +42,7 @@ class BladeTranslationsGenerator
 
     private function makeMaticeObject(?string $locale): string
     {
+        $locale = $locale ?? config('app.locale');
         $translations = json_encode($this->translations($locale));
         $appLocale = $locale ?? app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');

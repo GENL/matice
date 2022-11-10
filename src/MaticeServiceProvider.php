@@ -4,9 +4,7 @@ namespace Genl\Matice;
 
 use Genl\Matice\Commands\TranslationsGeneratorCommand;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
 
 class MaticeServiceProvider extends ServiceProvider
@@ -19,30 +17,12 @@ class MaticeServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'matice');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'matice');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
-
+      
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/matice.php' => config_path('matice.php'),
             ], 'config');
 
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/matice'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/matice'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/matice'),
-            ], 'lang');*/
         }
 
         // Registering package commands.

@@ -9,7 +9,7 @@ return [
      *
      * The path(directory) where matice finds the translations to work with.
      */
-    'lang_directory' => function_exists('lang_path') ? lang_path() : resource_path('lang'),
+    'lang_directory' => lang_path(),
 
     /*
     |--------------------------------------------------------------------------
