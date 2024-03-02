@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator;
+use \Illuminate\Support\Facades\Artisan;
 
 class MaticeServiceProvider extends ServiceProvider
 {
@@ -54,14 +55,15 @@ class MaticeServiceProvider extends ServiceProvider
             return MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));
         });
 
-        Blade::directive('translations', function ($locale) {
-            $locale = $locale ?: 'null';
-
+        Blade::directive('translations', function ($locales) {
+            $locales = $locales ?: 'null';
             $useCache = config('matice.use_generated_translations_file_in_prod') === true
                 && app()->isProduction()
                 ? 'true' : 'false';
-
-            return "<?php echo app()->make('matice')->generate($locale, true, $useCache); ?>";
+            if ($useCache === 'true') {
+                Artisan::call('matice:generate');
+            }
+            return "<?php echo app()->make('matice')->generate($locales, true, $useCache); ?>";
         });
     }
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class Helpers
 {
     /**
-     * Load all folders and files (php and json) inside of a directory and
+     * Load all folders and files (php and json) inside a directory and
      * return an array representation of them.
      *
      * @param $dir
@@ -21,44 +21,27 @@ class Helpers
     {
         $tree = [];
         $ffs = scandir($dir);
-
         foreach ($ffs as $ff) {
-            if (!Str::startsWith($ff, '.')) { // We skip hidden folders or config files the the directory.
-
+            if (!Str::startsWith($ff, '.')) { // We skip hidden folders or config files the directory.
                 $extension = '.' . Str::afterLast($ff, '.');
-
                 $ff = basename($ff, $extension);
-
                 $tree[$ff] = [];
-
                 if (is_dir($dir . '/' . $ff)) {
-
                     $tree[$ff] = MaticeServiceProvider::makeFolderFilesTree($dir . '/' . $ff);
-
                 }
-
                 if (is_file($pathName = $dir . '/' . $ff . $extension)) {
-
                     if ($extension === '.json') {
-
                         $existingTranslations = $tree[$ff] ?? [];
-
                         $tree[$ff] = array_merge(
                             $existingTranslations,
                             json_decode(File::get($pathName), true)
                         );
-
                     } else if ($extension === '.php') {
-
                         $tree[$ff] = require($pathName);
-
                     }
-
                 }
-
             }
         }
-
         return $tree;
     }
 
