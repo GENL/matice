@@ -60,7 +60,10 @@ class MaticeServiceProvider extends ServiceProvider
             $useCache = config('matice.use_generated_translations_file_in_prod') === true
                 && app()->isProduction()
                 ? 'true' : 'false';
-            if ($useCache === 'true') {
+            if (
+                $useCache === 'true' &&
+                !File::exists(config('matice.generate_translations_path'))
+            ) {
                 Artisan::call('matice:generate');
             }
             return "<?php echo app()->make('matice')->generate($locales, true, $useCache); ?>";

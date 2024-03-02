@@ -29,7 +29,7 @@ class BladeTranslationsGenerator
     public function generate($locales = null, bool $wrapInHtml = true, bool $useCache = false): string
     {
         $locales = is_array($locales ?? []) ?
-            $locales :
+            $locales ?? [] :
             preg_split(
                 '/,/',
                 preg_replace('/\s/', '', $locales),
