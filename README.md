@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice)
 [![Latest Version on NPM](https://img.shields.io/npm/v/matice.svg?style=flat)](https://npmjs.com/package/matice)
-[![GitHub Actions Status](https://img.shields.io/github/actions/workflow/status/genl/matice/.github/workflows/tests.yml?branch=master&label=tests&style=flat)](https://github.com/genl/matice/actions/workflows/.github/workflows/tests.yml?branch=master)
+[![Tests](https://github.com/GENL/matice/actions/workflows/tests.yml/badge.svg)](https://github.com/GENL/matice/actions/workflows/tests.yml)
 [![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice/stats)
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
@@ -83,13 +83,15 @@ Matice comes with almost the same localization concepts as Laravel.
 Read more about [Laravel localization](https://laravel.com/docs/localization)
 
 This package uses the `@translations` directive to inject a JavaScript object containing all of your application's translations, keyed by their names. This collection is available globally on the client side in the `window.Matice` object.
+
 The `@translations` directive accepts a list of locales to be loaded under th form of an array or a comma seperated string.
 If no locales are given, all the translations will be loaded.
 
 #### Examples
 
-import the `trans()` function like follow:
  ```php
+# In you blade file use:
+
 @translations(['en', 'fr'])
 
 or
