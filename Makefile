@@ -4,3 +4,7 @@ rnpm: ## Release the package and publish on npm
 
 test-front:
 	yarn test
+
+
+test-back:
+	vendor/bin/phpunit --testdox --colors=always

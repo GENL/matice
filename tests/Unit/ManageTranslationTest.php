@@ -28,10 +28,7 @@ class ManageTranslationTest extends TestCase
         return [MaticeServiceProvider::class];
     }
 
-    /**
-     * @test
-     */
-    public function loadTranslations()
+    public function test_load_translations()
     {
         $translations = Matice::translations();
 
@@ -44,10 +41,7 @@ class ManageTranslationTest extends TestCase
         $this->assertStringContainsString("Hi! I'm a json translation text.", json_encode($translations));
     }
 
-    /**
-     * @test
-     */
-    public function generateTranslationJs()
+    public function test_generate_translation_js()
     {
         $jsOutput = Matice::generate();
 
