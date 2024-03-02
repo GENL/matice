@@ -2,12 +2,13 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice)
 [![Latest Version on NPM](https://img.shields.io/npm/v/matice.svg?style=flat)](https://npmjs.com/package/matice)
-[![GitHub Actions Status](https://img.shields.io/github/workflow/status/genl/matice/Tests?label=tests&style=flat)](https://github.com/genl/matice/actions?query=workflow:Tests+branch:master)
+[![GitHub Actions Status](https://img.shields.io/github/actions/workflow/status/genl/matice/.github/workflows/tests.yml?branch=master&label=tests&style=flat)](https://github.com/genl/matice/actions/workflows/.github/workflows/tests.yml?branch=master)
 [![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice/stats)
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
 ![Logo](https://banners.beyondco.de/Matice.png?theme=dark&packageManager=composer+require&packageName=genl%2Fmatice&pattern=architect&style=style_1&description=Use+your+Laravel+translations+in+JavaScript&md=1&showWatermark=0&fontSize=100px&images=cube)
 
+https://github.com/genl/matice/actions/workflows/.github/workflows/tests.yml/badge.svg?event=push
 
 Matice creates a Blade directive that you can include in your views. 
 It will export a JavaScript object of your Laravel application's translations,
@@ -82,6 +83,20 @@ Matice comes with almost the same localization concepts as Laravel.
 Read more about [Laravel localization](https://laravel.com/docs/localization)
 
 This package uses the `@translations` directive to inject a JavaScript object containing all of your application's translations, keyed by their names. This collection is available globally on the client side in the `window.Matice` object.
+The `@translations` directive accepts a list of locales to be loaded under th form of an array or a comma seperated string.
+If no locales are given, all the translations will be loaded.
+
+#### Examples
+
+import the `trans()` function like follow:
+ ```php
+@translations(['en', 'fr'])
+
+or
+
+@translations('en, fr')
+```
+
 
 The package also creates an optional `trans()` JavaScript helper which works like Laravel's PHP `trans()` helper to retrieve translation strings.
 
@@ -183,7 +198,7 @@ sentence = __('greet.unknown') // greet.unknown
 #### Default values
 
 Matice uses your current app locale `app()->getLocale()` as the default locale when generating the translation object with the blade directive `@translations`.
-When generating with command line, it uses the one in your `config.app.locale`
+Same applies when generating with command line.
 
 When Matice does not find a key, it falls back to the default locale and search again. The fallback is the
 same you define in your `config.app.fallback_locale`.
