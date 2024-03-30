@@ -9,3 +9,5 @@ fake
 
 dist
 node_modules
+
+.phpunit.result.cache
