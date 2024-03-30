@@ -24,9 +24,16 @@ class BladeTranslationsGenerator
      *      All translation are loaded if locale is null or empty. Default to null
      * @param bool $wrapInHtml
      * @param bool $useCache - Whether to use the cached generated script or to generate a new one.
+     * @param bool $hasExport
      * @return string
+     * @throws LocaleTranslationsFileOrDirNotFoundException
      */
-    public function generate($locales = null, bool $wrapInHtml = true, bool $useCache = false): string
+    public function generate(
+        $locales = null,
+        bool $wrapInHtml = true,
+        bool $useCache = false,
+        bool $hasExport = true
+    ): string
     {
         $locales = is_array($locales ?? []) ?
             $locales ?? [] :
@@ -36,7 +43,7 @@ class BladeTranslationsGenerator
                 null,
                 PREG_SPLIT_NO_EMPTY
             );
-        // Given a list of locales are set, we want to make sure the fallback local
+        // Given a list of locales, we want to make sure the fallback local
         // is always there
         $locales = $locales ?
             collect(
@@ -72,36 +79,35 @@ class BladeTranslationsGenerator
                 "Matice Laravel Translations generated"
             );
         } else {
-            return $this->makeMaticeJSObject($locales);
+            return $this->makeMaticeJSObject($locales, $hasExport);
         }
     }
 
     /**
      * @param string[] $locales
+     * @param bool $hasExport
      * @return string
      * @throws LocaleTranslationsFileOrDirNotFoundException
      */
-    private function makeMaticeJSObject(array $locales): string
+    private function makeMaticeJSObject(array $locales, bool $hasExport=true): string
     {
         $translations = json_encode($this->translations($locales));
         $appLocale = $locale ?? app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');
-
+        $exportStatement = $hasExport ? "\n$this->maticeExportStatement" : '';
         return <<<EOT
 const Matice = {
   locale: '$appLocale',
   fallbackLocale: '$fallbackLocale',
   translations: $translations
 }
-
-$this->maticeExportStatement
+$exportStatement
 EOT;
     }
 
 
     /**
      * @param string $maticeJSObject
-     * @param bool $shouldRemoveExportStatement
      * @param string ...$comments
      * @return string
      */

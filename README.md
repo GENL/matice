@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice)
 [![Latest Version on NPM](https://img.shields.io/npm/v/matice.svg?style=flat)](https://npmjs.com/package/matice)
-[![GitHub Actions Status](https://img.shields.io/github/actions/workflow/status/genl/matice/.github/workflows/tests.yml?branch=master&label=tests&style=flat)](https://github.com/genl/matice/actions/workflows/.github/workflows/tests.yml?branch=master)
+[![Tests](https://github.com/GENL/matice/actions/workflows/tests.yml/badge.svg)](https://github.com/GENL/matice/actions/workflows/tests.yml)
 [![Total Downloads on packagist](https://img.shields.io/packagist/dt/genl/matice.svg?style=flat-square)](https://packagist.org/packages/genl/matice/stats)
 [![Downloads on NPM](https://img.shields.io/npm/dt/matice.svg?style=flat)](https://www.npmjs.com/package/matice)
 
@@ -284,11 +284,11 @@ The base directory is the lang_directory defined in the config file: `config('ma
 ## Use with SPA
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used (or not) as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
 
-You can run `php artisan matice:generate` in your project to generate a static translations file in `resources/assets/js/matice_translations.js`.
+You can run `php artisan matice:generate --no-export` in your project to generate a static translations file without the export statement in `resources/assets/js/matice_translations.js`.
 You can customize the generation path in the `config/matice.php` file.
 
 ```sh
-php artisan matice:generate
+php artisan matice:generate --no-export
 ```
 
 An example of `matice_translations.js`, where auth translations exist in `resources/lang/en/auth.php`:
@@ -318,12 +318,11 @@ const Matice = {
     }
 };
 
-export { Matice };
 ```
 
 At this point you can use in javascript this translations file like usual, paste in your html as well.
 
-This is useful if your laravel and js app is separated like with SPA or PWA. So you can
+This is useful if your laravel and js app are separated like with SPA or PWA. So you can
 link the generated translations file with your JS App. If you're not in the case of SPA, WPA...
 you might never have to generate the translations manually because `@translations` directive already does
 it for you when the app environment is 'production' to improve performance.

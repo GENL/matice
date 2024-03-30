@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\File;
 
 class TranslationsGeneratorCommand extends Command
 {
-    protected $signature = 'matice:generate'; // {path=./resources/assets/js/matice_translations.js}
+    protected $signature = 'matice:generate
+                            {--no-export : Omit the export statement}';
 
     protected $description = 'Generate js file for including in build process';
+
 
     /**
      * Create a new command instance.
@@ -30,7 +32,9 @@ class TranslationsGeneratorCommand extends Command
     public function handle()
     {
         $path = config('matice.generate_translations_path'); // $this->argument('path');
-        $generatedTranslations = Matice::generate(null, false, false);
+        $generatedTranslations = Matice::generate(
+            null, false, false, !$this->option('no-export')
+        );
         $generatedTranslations = ('/*
 |--------------------------------------------------------------------------
 | Generated Laravel translations
