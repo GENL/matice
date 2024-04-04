@@ -83,13 +83,15 @@ Matice comes with almost the same localization concepts as Laravel.
 Read more about [Laravel localization](https://laravel.com/docs/localization)
 
 This package uses the `@translations` directive to inject a JavaScript object containing all of your application's translations, keyed by their names. This collection is available globally on the client side in the `window.Matice` object.
+
 The `@translations` directive accepts a list of locales to be loaded under th form of an array or a comma seperated string.
 If no locales are given, all the translations will be loaded.
 
 #### Examples
 
-import the `trans()` function like follow:
  ```php
+# In you blade file use:
+
 @translations(['en', 'fr'])
 
 or
