@@ -32,19 +32,18 @@ class Helpers
         $jsonPaths = self::getJsonPaths($dir);
 
         foreach ($jsonPaths as $jsonPath) {
-            $files = File::files($jsonPath);
-
-            foreach ($files as $file) {
-                if ($file->getExtension() !== 'json') {
-                    continue;
+            if(File::exists($jsonPath)) {
+                $files = File::files($jsonPath);
+                foreach ($files as $file) {
+                    if ($file->getExtension() !== 'json') {
+                        continue;
+                    }
+                    $locale = $file->getFilenameWithoutExtension();
+                    $tree[$locale] = array_merge(
+                        $tree[$locale] ?? [],
+                        json_decode($file->getContents(), true)
+                    );
                 }
-
-                $locale = $file->getFilenameWithoutExtension();
-
-                $tree[$locale] = array_merge(
-                    $tree[$locale] ?? [],
-                    json_decode($file->getContents(), true)
-                );
             }
         }
 
