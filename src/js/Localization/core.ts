@@ -130,7 +130,7 @@ class Localization {
         // In JS, parseInt() parses the firsts non-empty characters that are parsable.
         // So parseInt("2} ABC") will return 2.
         const parsed = Number.parseInt(m.trim())
-        // If parsed is a star(*) which mean infinity, just replace by count + 1
+        // If parsed is a star(*) which means infinity, just replace by count + 1
         return Number.isInteger(parsed) ? parsed : count + 1
       })
       // Let's make sure to remove the range closing symbols in the parts: "]", "}".
@@ -177,8 +177,8 @@ class Localization {
   private findSentence(key: string, silentNotFoundError: boolean, locale: string = MaticeLocalizationConfig.locale, splitKey: boolean = false): string {
     const translations: { [key: string]: any } = this.translations(locale)
 
-    // At first [link] is a [Map<String, dynamic>] but at the end, it can be a [String],
-    // the sentences.
+    // Initially, [link] is a [Map<String, dynamic>] but at the end, it can be a [String],
+    // the sentence.
     let link = translations
 
     const parts = splitKey ? key.split('.') : [key]
