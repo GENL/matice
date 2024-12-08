@@ -41,7 +41,7 @@ class ManageTranslationTest extends TestCase
         $this->assertStringContainsString("Hi! I'm a json translation text.", json_encode($translations['en']));
 
         $this->assertArrayHasKey('From default json file', $translations['en']);
-        $this->assertContains("Hi! I'm fom a default json translation file.", $translations['en']);
+        $this->assertContains("Hi! I'm from a default json translation file.", $translations['en']);
     }
 
     public function test_load_translations_from_additional_json_paths()
@@ -64,10 +64,10 @@ class ManageTranslationTest extends TestCase
         $this->assertStringContainsString("Hi! I'm a json translation text.", json_encode($translations['en']));
 
         $this->assertArrayHasKey('From default json file', $translations['en']);
-        $this->assertContains("Hi! I'm fom a default json translation file.", $translations['en']);
+        $this->assertContains("Hi! I'm from a default json translation file.", $translations['en']);
 
         $this->assertArrayHasKey('From additional json file', $translations['en']);
-        $this->assertContains("Hi! I'm fom an additional json translation file.", $translations['en']);
+        $this->assertContains("Hi! I'm from an additional json translation file.", $translations['en']);
     }
 
     public function test_no_fail_when_translations_json_paths_doesnt_exist()
