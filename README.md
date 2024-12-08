@@ -63,7 +63,7 @@ npm install matice
 or load it from a CDN:
 ```html
 <!-- Load the Matice translation object first -->
-<script src="https://unpkg.com/matice@1.1.x/dist/matice.min.js" defer></script>
+<script src="https://unpkg.com/matice@latest/dist/matice.min.js" defer></script>
 ```
 
 * Note that the JavaScript package only contains the translations logic. You have to generate your translations file and make 
