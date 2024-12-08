@@ -102,51 +102,45 @@ class Localization {
 
   // noinspection JSMethodCanBeStatic
   /**
-   * Manage sentence pluralization the sentence. Return the good sentence depending of the `count` argument.
+   * Manage sentence pluralization the sentence. Return the good sentence depending on the `count` argument.
    */
   private pluralize(sentence: string, count: number): string {
     let parts = sentence.split('|')
-
-    // Make sure the pieces are always three in length for ease of calculation.
-    // We fill the empty indexes with a direct preceding index.
+    // Make sure the pieces are always three for the ease of calculation.
+    // We fill the empty indexes with the direct preceding index.
     // We fill the empty parts by the last part.
     if (parts.length >= 3) parts = [parts[0], parts[1], parts[2]]
     else if (parts.length === 2) parts = [parts[0], parts[0], parts[1]]
     else parts = [parts[0], parts[0], parts[0]]
-
     // Manage multiple number range.
     let ranges: { min: number, max: number, part: string }[] = []
     const pattern = /^(\[(\s*\d+\s*)+,(\s*(\d+|\*)\s*)])|({\s*\d+\s*})/
-
     for (let i = 0; i < parts.length; i++) {
       let part = parts[i]
       let matched = part.match(pattern)
-
       if (matched === null) {
-        // If range is found, use the part index as the range.
+        // If no range is found, use the part index as the range.
         parts[i] = `{${i}} ${parts[i]}`
         matched = [parts[i]]
       }
-
-      // Remove unwanted characters: "[",  "]",  "{",  "}"
-      const replaced = matched[0].replace(/[\[{\]}]/, '')
+      // Remove unwanted the opening range characters: "[",  "{",
+      const replaced = matched[0].replace(/[\[{]/, '')
       // Split the matched to have an array of string number
-      const rangeNumbers = replaced.split(',').map((m: string) => {
+      const rangeNumbers = replaced.split(/(?<=\d),/, 2).map((m: string) => {
+        // In JS, parseInt() parses the firsts non-empty characters that are parsable.
+        // So parseInt("2} ABC") will return 2.
         const parsed = Number.parseInt(m.trim())
         // If parsed is a star(*) which mean infinity, just replace by count + 1
         return Number.isInteger(parsed) ? parsed : count + 1
       })
-
-      // Lets make sure to remove the range symbols in the parts.
+      // Let's make sure to remove the range closing symbols in the parts: "]", "}".
       parts[i] = part = part.replace(pattern, '')
-
       ranges.push(
         rangeNumbers.length == 1
           ? {min: rangeNumbers[0], max: rangeNumbers[0], part}
           : {min: rangeNumbers[0], max: rangeNumbers[1], part}
       )
     }
-
     let foundInRange = false
     // Compare the part with the range to choose the pluralization.
     // -------  ------
@@ -168,7 +162,6 @@ class Localization {
         sentence = parts[parts.length - 1]
       }
     }
-
     return sentence
   }
 

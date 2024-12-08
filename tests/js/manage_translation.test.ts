@@ -8,9 +8,12 @@ global.Matice = {
         "me": "Hello!",
         "meMore": "Hello Ekcel Henrich!",
         "people": "Hello Ekcel!|Hello everyone!",
+        "peopleWithComma": "Hello, Ekcel!|Hello everyone!",
       },
       "balance": "{0} You're broke|[1000, 5000] a middle man|[1000000,*] You are awesome :name; :count Million Dollars",
+      "balanceWithComma": "{0} You're hmm, broke|[1000, 5000] a hmm, middle man|[1000000,*] You are awesome :name, :count Million Dollars",
       "pluralTwoSegments": "One user|Many users",
+      "pluralTwoSegmentsWithComma": "One user and a, comma and a, second comma|Many, users. Yeah, comma again",
     },
     "fr": {
       "greet": {
@@ -26,7 +29,7 @@ global.Matice = {
 
 // const translation = require("../../src/js")
 
-test('Retrieves simple sentence.', () => {
+test('Retrieves simple sentences', () => {
   expect(locales()).toEqual(['en', 'fr'])
 
   let sentence = trans('greet.me')
@@ -63,10 +66,13 @@ test('Retrieves simple sentence.', () => {
   expect(sentence).toEqual("Avec plusieurs points, c'est mieux...")
 });
 
-test('Pluralize the sentence well', () => {
+test('Properly pluralize sentences', () => {
   let sentence: string;
   sentence = trans('greet.people', {args: {count: 0}, pluralize: true})
   expect(sentence).toEqual("Hello Ekcel!")
+
+  sentence = trans('greet.peopleWithComma', {args: {count: 0}, pluralize: true})
+  expect(sentence).toEqual("Hello, Ekcel!")
 
   sentence = trans('greet.people', {args: {count: 20}, pluralize: true})
   expect(sentence).toEqual("Hello everyone!")
@@ -74,8 +80,14 @@ test('Pluralize the sentence well', () => {
   sentence = trans('balance', {args: {count: 0}, pluralize: true})
   expect(sentence).toEqual(" You're broke")
 
+  sentence = trans('balanceWithComma', {args: {count: 0}, pluralize: true})
+  expect(sentence).toEqual(" You're hmm, broke")
+
   sentence = trans('balance', {args: {count: 2853}, pluralize: true})
   expect(sentence).toEqual(" a middle man")
+
+  sentence = trans('balanceWithComma', {args: {count: 2853}, pluralize: true})
+  expect(sentence).toEqual(" a hmm, middle man")
 
   sentence = trans('balance', {args: {count: 1000000}, pluralize: true})
   expect(sentence).toEqual(" You are awesome :name; 1000000 Million Dollars")
@@ -86,8 +98,14 @@ test('Pluralize the sentence well', () => {
   sentence = transChoice('pluralTwoSegments', 1)
   expect(sentence).toEqual("One user")
 
+  sentence = transChoice('pluralTwoSegmentsWithComma', 1)
+  expect(sentence).toEqual("One user and a, comma and a, second comma")
+
   sentence = transChoice('pluralTwoSegments', 2)
   expect(sentence).toEqual("Many users")
+
+  sentence = transChoice('pluralTwoSegmentsWithComma', 2)
+  expect(sentence).toEqual("Many, users. Yeah, comma again")
 });
 
 test('Test that the locale can be forced', () => {
