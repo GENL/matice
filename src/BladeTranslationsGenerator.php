@@ -40,7 +40,7 @@ class BladeTranslationsGenerator
             preg_split(
                 '/,/',
                 preg_replace('/\s/', '', $locales),
-                null,
+                -1,
                 PREG_SPLIT_NO_EMPTY
             );
         // Given a list of locales, we want to make sure the fallback local
