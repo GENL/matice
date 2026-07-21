@@ -111,13 +111,19 @@ class Helpers
      * When the same namespace is included and excepted at the same time, it considered excepted.
      *
      * @param array $translations
+     * @param string[] $locales Locales being loaded (used to resolve short namespace names).
+     * @param array{only?: string|string[], except?: string|string[]} $options
+     *      Optional per-call overrides. When a key is present it replaces the matching config value.
      */
-    public static function applyTranslationRestrictions(array &$translations)
+    public static function applyTranslationRestrictions(array &$translations, array $locales = [], array $options = [])
     {
         // ----------
         // Manage exported namespaces
         // ----------
-        $exportables = config('matice.only');
+        $exportables = array_key_exists('only', $options)
+            ? Arr::wrap($options['only'])
+            : config('matice.only');
+        $exportables = self::resolveNamespaces($exportables, $translations, $locales);
 
         // When the user ask to export only a certain namespaces, we empty the $translation to fill them later
         // with the only ones required.
@@ -127,12 +133,7 @@ class Helpers
         }
 
         foreach ($exportables as $exportableNamespace) {
-            // Force "/" as separator
-            $exportableNamespace = str_replace('\\', '/', trim($exportableNamespace, '/\\'));
-            // Remove the last dot that might exit when the namespace is a file.
-            $exportableNamespace = Str::beforeLast($exportableNamespace,'.');
-            // Replace the "/" by "."
-            $exportableNamespace = str_replace('/', '.', $exportableNamespace);
+            $exportableNamespace = self::namespaceToDotPath($exportableNamespace);
 
             // Set only the translations for the exportable namespaces
             $value = Arr::get($copy, (string)$exportableNamespace);
@@ -142,18 +143,66 @@ class Helpers
         // ----------
         // Manage excepted namespaces
         // ----------
-        $hidden = config('matice.except');
+        $hidden = array_key_exists('except', $options)
+            ? Arr::wrap($options['except'])
+            : config('matice.except');
+        $hidden = self::resolveNamespaces($hidden, $translations, $locales);
 
         foreach ($hidden as $hiddenNamespace) {
-            // Force "/" as separator
-            $hiddenNamespace = str_replace('\\', '/', trim($hiddenNamespace, '/\\'));
-            // Remove the last dot that might exit when the namespace is a file.
-            $hiddenNamespace = Str::beforeLast($hiddenNamespace,'.');
-            // Replace the "/" by "."
-            $hiddenNamespace = str_replace('/', '.', $hiddenNamespace);
+            $hiddenNamespace = self::namespaceToDotPath($hiddenNamespace);
 
             // remove the translations in the array
             Arr::forget($translations, $hiddenNamespace);
         }
+    }
+
+    /**
+     * Resolve namespace filters to paths relative to the lang directory.
+     * Short names (e.g. "auth") are expanded to "{locale}/auth" for each loaded locale.
+     * Full paths (e.g. "en/auth") are kept as-is.
+     *
+     * @param string[] $namespaces
+     * @param array $translations
+     * @param string[] $locales
+     * @return string[]
+     */
+    private static function resolveNamespaces(array $namespaces, array $translations, array $locales): array
+    {
+        $localeKeys = $locales ?: array_keys($translations);
+        $resolved = [];
+
+        foreach ($namespaces as $namespace) {
+            $namespace = str_replace('\\', '/', trim((string) $namespace, '/\\'));
+            $namespace = Str::beforeLast($namespace, '.');
+
+            if ($namespace === '') {
+                continue;
+            }
+
+            // Full path when the first segment is a locale key (e.g. "en/auth").
+            // Otherwise treat as a short name and expand under each loaded locale.
+            $firstSegment = Str::before($namespace, '/');
+
+            if (isset($translations[$firstSegment])) {
+                $resolved[] = $namespace;
+                continue;
+            }
+
+            foreach ($localeKeys as $locale) {
+                if (isset($translations[$locale])) {
+                    $resolved[] = $locale . '/' . $namespace;
+                }
+            }
+        }
+
+        return $resolved;
+    }
+
+    private static function namespaceToDotPath(string $namespace): string
+    {
+        $namespace = str_replace('\\', '/', trim($namespace, '/\\'));
+        $namespace = Str::beforeLast($namespace, '.');
+
+        return str_replace('/', '.', $namespace);
     }
 }

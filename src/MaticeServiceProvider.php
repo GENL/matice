@@ -55,8 +55,8 @@ class MaticeServiceProvider extends ServiceProvider
             return MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));
         });
 
-        Blade::directive('translations', function ($locales) {
-            $locales = $locales ?: 'null';
+        Blade::directive('translations', function ($expression) {
+            $expression = $expression ?: 'null';
             $useCache = config('matice.use_generated_translations_file_in_prod') === true
                 && app()->isProduction()
                 ? 'true' : 'false';
@@ -66,7 +66,7 @@ class MaticeServiceProvider extends ServiceProvider
             ) {
                 Artisan::call('matice:generate');
             }
-            return "<?php echo app()->make('matice')->generate($locales, true, $useCache); ?>";
+            return "<?php echo app()->make('matice')->generateFromBlade($useCache, $expression); ?>";
         });
     }
 

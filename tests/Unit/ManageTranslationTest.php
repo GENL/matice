@@ -99,9 +99,12 @@ class ManageTranslationTest extends TestCase
 
         $this->app->env = 'testing';
 
-        $this->assertTrue("<?php echo app()->make('matice')->generate(null, true, false); ?>" === $bladeOutPut1);
-        $this->assertTrue("<?php echo app()->make('matice')->generate('en', true, false); ?>" === $bladeOutPut2);
-        $this->assertTrue("<?php echo app()->make('matice')->generate(null, true, true); ?>" === $bladeOutPut3);
+        $this->assertTrue("<?php echo app()->make('matice')->generateFromBlade(false, null); ?>" === $bladeOutPut1);
+        $this->assertTrue("<?php echo app()->make('matice')->generateFromBlade(false, 'en'); ?>" === $bladeOutPut2);
+        $this->assertTrue("<?php echo app()->make('matice')->generateFromBlade(true, null); ?>" === $bladeOutPut3);
+
+        $bladeOutPut4 = Blade::compileString("@translations('en', ['only' => ['example1']])");
+        $this->assertTrue("<?php echo app()->make('matice')->generateFromBlade(false, 'en', ['only' => ['example1']]); ?>" === $bladeOutPut4);
     }
 
     public function test_namespaces_can_be_excepted()
@@ -159,5 +162,85 @@ class ManageTranslationTest extends TestCase
         $this->assertArrayHasKey('example1', $translations['en']);
         $this->assertArrayNotHasKey('example2', $translations['en']);
         $this->assertArrayNotHasKey('folder', $translations['en']);
+    }
+
+    public function test_directive_options_only_with_short_names()
+    {
+        $translations = Matice::translations(['en'], [
+            'only' => ['example1', 'example2'],
+        ]);
+
+        $this->assertArrayHasKey('example1', $translations['en']);
+        $this->assertArrayHasKey('example2', $translations['en']);
+        $this->assertArrayNotHasKey('folder', $translations['en']);
+    }
+
+    public function test_directive_options_except_with_short_names()
+    {
+        $translations = Matice::translations(['en'], [
+            'except' => ['example1', 'example2'],
+        ]);
+
+        $this->assertArrayNotHasKey('example1', $translations['en']);
+        $this->assertArrayNotHasKey('example2', $translations['en']);
+        $this->assertArrayHasKey('folder', $translations['en']);
+    }
+
+    public function test_directive_options_only_overrides_config()
+    {
+        config(['matice.only' => [
+            'en/folder',
+        ]]);
+
+        $translations = Matice::translations(['en'], [
+            'only' => ['example1'],
+        ]);
+
+        $this->assertArrayHasKey('example1', $translations['en']);
+        $this->assertArrayNotHasKey('folder', $translations['en']);
+    }
+
+    public function test_directive_options_absent_key_falls_back_to_config()
+    {
+        config(['matice.except' => [
+            'en/example1',
+        ]]);
+
+        $translations = Matice::translations(['en'], [
+            'only' => ['example1', 'example2'],
+        ]);
+
+        $this->assertArrayNotHasKey('example1', $translations['en']);
+        $this->assertArrayHasKey('example2', $translations['en']);
+    }
+
+    public function test_directive_options_support_full_paths()
+    {
+        $translations = Matice::translations(['en'], [
+            'only' => ['en/example1'],
+        ]);
+
+        $this->assertArrayHasKey('example1', $translations['en']);
+        $this->assertArrayNotHasKey('example2', $translations['en']);
+    }
+
+    public function test_generate_from_blade_disables_cache_when_options_present()
+    {
+        $path = 'fake/assets/js/matice_translations.js';
+        if (! is_dir(dirname($path))) {
+            mkdir(dirname($path), 0777, true);
+        }
+        file_put_contents($path, "const Matice = { cached: true };");
+
+        try {
+            $output = app('matice')->generateFromBlade(true, 'en', [
+                'only' => ['example1'],
+            ]);
+
+            $this->assertStringNotContainsString('cached: true', $output);
+            $this->assertStringContainsString('example1', $output);
+        } finally {
+            @unlink($path);
+        }
     }
 }
