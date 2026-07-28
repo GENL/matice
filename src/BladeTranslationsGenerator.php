@@ -94,7 +94,7 @@ class BladeTranslationsGenerator
         }
         if ($wrapInHtml) {
             return $this->makeMaticeHtml(
-                $this->makeMaticeJSObject($locales, true, $options),
+                $this->makeMaticeJSObject($locales, false, $options),
                 true,
                 "Matice Laravel Translations generated"
             );
