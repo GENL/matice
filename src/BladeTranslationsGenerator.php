@@ -113,7 +113,7 @@ class BladeTranslationsGenerator
     private function makeMaticeJSObject(array $locales, bool $hasExport=true, array $options = []): string
     {
         $translations = json_encode($this->translations($locales, $options));
-        $appLocale = $locale ?? app()->getLocale();
+        $appLocale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');
         $exportStatement = $hasExport ? "\n$this->maticeExportStatement" : '';
         return <<<EOT
