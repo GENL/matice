@@ -201,6 +201,7 @@ class Helpers
     private static function namespaceToDotPath(string $namespace): string
     {
         $namespace = str_replace('\\', '/', trim($namespace, '/\\'));
+        // Remove the last dot that might exit when the namespace is a file.
         $namespace = Str::beforeLast($namespace, '.');
 
         return str_replace('/', '.', $namespace);
