@@ -279,6 +279,20 @@ To set up namespace translations filtering, update in your config file either an
 
 The base directory is the lang_directory defined in the config file: `config('matice.lang_directory')`.
 
+You can also override `only` / `except` per Blade layout (useful when different surfaces need different translation subsets):
+
+```blade
+@translations(app()->getLocale(), [
+    'only' => ['linkinbio', 'public'],
+    'except' => ['dashboard'],
+])
+```
+
+- Short names (`auth`, `dashboard`) are resolved under the loaded locale(s).
+- Full paths (`en/auth`) work the same as in the config.
+- When an options key is present, it replaces the matching config value for that render.
+- When options are passed, the generated translations cache file is not used (filters are layout-specific).
+
 ## Use with SPA
 Matice registers an Artisan console command to generate a `matice_translations.js` translations file, which can be used (or not) as part of an asset pipeline such as [Laravel Mix](https://laravel.com/docs/mix).
 

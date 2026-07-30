@@ -14,6 +14,24 @@ class BladeTranslationsGenerator
     private $maticeExportStatement = 'export {Matice}';
 
     /**
+     * Blade entry-point so `@translations($locale, $options)` can pass a trailing options array
+     * without colliding with generate()'s bool parameters.
+     *
+     * @param string|string[]|null $locales
+     * @param array{only?: string|string[], except?: string|string[]} $options
+     * @throws LocaleTranslationsFileOrDirNotFoundException
+     */
+    public function generateFromBlade(bool $useCache, $locales = null, array $options = []): string
+    {
+        // A shared generated file cannot be layout-specific.
+        if ($options !== []) {
+            $useCache = false;
+        }
+
+        return $this->generate($locales, true, $useCache, true, $options);
+    }
+
+    /**
      * Loads the translations array and generates the html code containing the JavaScript
      * translation that will be used on the frontend.
      *
@@ -25,6 +43,7 @@ class BladeTranslationsGenerator
      * @param bool $wrapInHtml
      * @param bool $useCache - Whether to use the cached generated script or to generate a new one.
      * @param bool $hasExport
+     * @param array{only?: string|string[], except?: string|string[]} $options
      * @return string
      * @throws LocaleTranslationsFileOrDirNotFoundException
      */
@@ -32,7 +51,8 @@ class BladeTranslationsGenerator
         $locales = null,
         bool $wrapInHtml = true,
         bool $useCache = false,
-        bool $hasExport = true
+        bool $hasExport = true,
+        array $options = []
     ): string
     {
         $locales = is_array($locales ?? []) ?
@@ -74,25 +94,26 @@ class BladeTranslationsGenerator
         }
         if ($wrapInHtml) {
             return $this->makeMaticeHtml(
-                $this->makeMaticeJSObject($locales),
+                $this->makeMaticeJSObject($locales, false, $options),
                 true,
                 "Matice Laravel Translations generated"
             );
         } else {
-            return $this->makeMaticeJSObject($locales, $hasExport);
+            return $this->makeMaticeJSObject($locales, $hasExport, $options);
         }
     }
 
     /**
      * @param string[] $locales
      * @param bool $hasExport
+     * @param array{only?: string|string[], except?: string|string[]} $options
      * @return string
      * @throws LocaleTranslationsFileOrDirNotFoundException
      */
-    private function makeMaticeJSObject(array $locales, bool $hasExport=true): string
+    private function makeMaticeJSObject(array $locales, bool $hasExport=true, array $options = []): string
     {
-        $translations = json_encode($this->translations($locales));
-        $appLocale = $locale ?? app()->getLocale();
+        $translations = json_encode($this->translations($locales, $options));
+        $appLocale = app()->getLocale();
         $fallbackLocale = config('app.fallback_locale');
         $exportStatement = $hasExport ? "\n$this->maticeExportStatement" : '';
         return <<<EOT
@@ -137,13 +158,14 @@ EOT;
      * Load all the translations array.
      *
      * @param string[] $locales
+     * @param array{only?: string|string[], except?: string|string[]} $options
      * @return array
      * @throws LocaleTranslationsFileOrDirNotFoundException
      */
-    public function translations(array $locales = []): array
+    public function translations(array $locales = [], array $options = []): array
     {
         $translations = MaticeServiceProvider::makeFolderFilesTree(config('matice.lang_directory'));
-        Helpers::applyTranslationRestrictions($translations);
+        Helpers::applyTranslationRestrictions($translations, $locales, $options);
         $selectedTranslations = [];
         foreach($locales as $l) {
             if (isset($translations[$l])) {

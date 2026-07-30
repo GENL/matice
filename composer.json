@@ -38,7 +38,12 @@
 
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "policy": {
+            "advisories": {
+                "block": false
+            }
+        }
     },
     "extra": {
         "laravel": {
